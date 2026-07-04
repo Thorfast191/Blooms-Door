@@ -22,22 +22,21 @@ export default function AdminLayout({
           </a>
 
           <a href="/admin/products" className="block hover:text-blue-400">
-            Products Managment
+            Products Management
           </a>
 
           <a href="/admin/categories" className="block hover:text-blue-400">
-            Categories Managment
+            Categories Management
           </a>
 
           <a href="/admin/orders" className="block hover:text-blue-400">
-            Orders Managment
+            Orders Management
           </a>
+
           <a href="/admin/shipping" className="block hover:text-blue-400">
-            Shipping Managment
+            Shipping Management
           </a>
-          <a href="/admin/coupons " className="block hover:text-blue-400">
-            Coupons Managment
-          </a>
+
           <a href="/admin/settings" className="block hover:text-blue-400">
             Settings
           </a>

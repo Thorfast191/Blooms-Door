@@ -21,7 +21,7 @@ export default async function CategoriesPage() {
 
       {/* CREATE */}
 
-      <CategoryForm categories={categories} />
+      <CategoryForm />
 
       {/* TABLE */}
 
