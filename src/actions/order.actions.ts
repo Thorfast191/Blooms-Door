@@ -1,297 +1,125 @@
 "use server";
 
-import { hasPermission } from "@/lib/auth";
-
 import { prisma } from "@/lib/prisma";
-
-import { auth } from "@/auth";
-
 import { revalidatePath } from "next/cache";
-
-import { getProductPrice } from "@/lib/pricing";
+import { OrderStatus } from "@prisma/client";
 
 // ========================
 // CREATE ORDER
 // ========================
 
 interface CreateOrderInput {
-  items: {
-    productId: string;
-    variantId?: string;
-    quantity: number;
-  }[];
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+
+  address: string;
 
   shippingMethodId?: string;
 
-  shippingCost: number;
-
-  shippingAddress?: string;
-
-  shippingPhone?: string;
-
-  customerName?: string;
-
-  customerEmail?: string;
-
-  paymentMethod: string;
-
-  // COUPON
-
-  couponCode?: string;
-
-  discount?: number;
+  items: {
+    productId: string;
+    quantity: number;
+  }[];
 }
 
 export async function createOrder({
-  items,
-  shippingMethodId,
-  shippingCost,
-  shippingAddress,
-  shippingPhone,
   customerName,
+  customerPhone,
   customerEmail,
-  paymentMethod,
-  couponCode,
-  discount = 0,
+  address,
+  shippingMethodId,
+  items,
 }: CreateOrderInput) {
-  const session = await auth();
-
-  let user = null;
-
-  if (session?.user?.email) {
-    user = await prisma.user.findUnique({
-      where: {
-        email: session.user.email,
-      },
-    });
-  }
-
-  if (!items || items.length === 0) {
+  if (!items.length) {
     throw new Error("Cart is empty");
   }
 
-  const order = await prisma.$transaction(async (tx) => {
-    let subtotal = 0;
-
-    const orderItems: {
-      productId: string;
-      variantId?: string | null;
-      quantity: number;
-      price: number;
-    }[] = [];
-
-    // ========================
-    // VALIDATE PRODUCTS
-    // ========================
-
-    for (const item of items) {
-      const product = await tx.product.findUnique({
+  const shippingMethod = shippingMethodId
+    ? await prisma.shippingMethod.findUnique({
         where: {
-          id: item.productId,
+          id: shippingMethodId,
         },
+      })
+    : null;
 
-        include: {
-          variants: true,
-        },
-      });
+  let subtotal = 0;
 
-      if (!product) {
-        throw new Error("Product not found");
-      }
+  const orderItems: {
+    productId: string;
+    productName: string;
+    price: number;
+    quantity: number;
+  }[] = [];
 
-      if (product.isArchived) {
-        throw new Error(`${product.name} is unavailable`);
-      }
-
-      const pricing = getProductPrice(product);
-
-      // ========================
-      // VARIANT PRODUCT
-      // ========================
-
-      if (item.variantId) {
-        const variant = product.variants.find((v) => v.id === item.variantId);
-
-        if (!variant) {
-          throw new Error("Variant not found");
-        }
-
-        if (!variant.isActive) {
-          throw new Error("Variant unavailable");
-        }
-
-        if (variant.stock < item.quantity) {
-          throw new Error(
-            `${product.name} (${variant.size || "-"}) only has ${
-              variant.stock
-            } left`,
-          );
-        }
-
-        const finalPrice = variant.price ?? pricing.finalPrice;
-
-        subtotal += finalPrice * item.quantity;
-
-        orderItems.push({
-          productId: product.id,
-          variantId: variant.id,
-          quantity: item.quantity,
-          price: finalPrice,
-        });
-      }
-
-      // ========================
-      // SIMPLE PRODUCT
-      // ========================
-      else {
-        if (product.stock < item.quantity) {
-          throw new Error(`${product.name} only has ${product.stock} left`);
-        }
-
-        subtotal += pricing.finalPrice * item.quantity;
-
-        orderItems.push({
-          productId: product.id,
-          variantId: null,
-          quantity: item.quantity,
-          price: pricing.finalPrice,
-        });
-      }
-    }
-
-    // ========================
-    // TOTAL
-    // ========================
-
-    const total = Math.max(subtotal + shippingCost - discount, 0);
-
-    // ========================
-    // DEDUCT STOCK
-    // ========================
-
-    for (const item of items) {
-      // VARIANT PRODUCT
-
-      if (item.variantId) {
-        const variant = await tx.productVariant.findUnique({
-          where: {
-            id: item.variantId,
-          },
-        });
-
-        if (!variant) {
-          throw new Error("Variant not found");
-        }
-
-        if (variant.stock < item.quantity) {
-          throw new Error("Stock changed during checkout. Please try again.");
-        }
-
-        await tx.productVariant.update({
-          where: {
-            id: item.variantId,
-          },
-
-          data: {
-            stock: {
-              decrement: item.quantity,
-            },
-          },
-        });
-      }
-
-      // SIMPLE PRODUCT
-      else {
-        const product = await tx.product.findUnique({
-          where: {
-            id: item.productId,
-          },
-        });
-
-        if (!product) {
-          throw new Error("Product not found");
-        }
-
-        if (product.stock < item.quantity) {
-          throw new Error("Stock changed during checkout. Please try again.");
-        }
-
-        await tx.product.update({
-          where: {
-            id: item.productId,
-          },
-
-          data: {
-            stock: {
-              decrement: item.quantity,
-            },
-          },
-        });
-      }
-    }
-
-    // ========================
-    // CREATE ORDER
-    // ========================
-
-    const order = await tx.order.create({
-      data: {
-        userId: user?.id,
-
-        customerName,
-
-        customerEmail,
-
-        shippingMethodId,
-
-        shippingCost,
-
-        shippingAddress,
-
-        shippingPhone,
-
-        paymentMethod: paymentMethod as any,
-
-        couponCode,
-
-        discount,
-
-        total,
-
-        items: {
-          create: orderItems,
-        },
-      },
-
-      include: {
-        items: true,
+  for (const item of items) {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: item.productId,
       },
     });
 
-    return order;
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    subtotal += product.price * item.quantity;
+
+    orderItems.push({
+      productId: product.id,
+      productName: product.name,
+      price: product.price,
+      quantity: item.quantity,
+    });
+  }
+
+  const shipping = shippingMethod?.price ?? 0;
+  const total = subtotal + shipping;
+
+  const order = await prisma.order.create({
+    data: {
+      customerName,
+      customerPhone,
+      customerEmail,
+      address,
+
+      shippingMethodId,
+
+      subtotal,
+      shipping,
+      total,
+
+      items: {
+        create: orderItems,
+      },
+    },
+
+    include: {
+      shippingMethod: true,
+
+      items: {
+        include: {
+          product: {
+            include: {
+              images: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   revalidatePath("/admin/orders");
-  revalidatePath("/admin/products");
   revalidatePath("/shop");
-  revalidatePath("/account/orders");
 
   return order;
 }
-
 // ========================
 // GET ORDERS
 // ========================
 
 export async function getOrders(page = 1, search = "") {
-  const allowed = await hasPermission("manage_orders");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   const take = 10;
-
   const skip = (page - 1) * take;
 
   return prisma.order.findMany({
@@ -304,23 +132,20 @@ export async function getOrders(page = 1, search = "") {
               mode: "insensitive",
             },
           },
-
           {
             customerName: {
               contains: search,
               mode: "insensitive",
             },
           },
-
           {
-            customerEmail: {
+            customerPhone: {
               contains: search,
               mode: "insensitive",
             },
           },
-
           {
-            shippingPhone: {
+            customerEmail: {
               contains: search,
               mode: "insensitive",
             },
@@ -330,63 +155,17 @@ export async function getOrders(page = 1, search = "") {
     },
 
     take,
-
     skip,
 
-    select: {
-      id: true,
-
-      total: true,
-
-      discount: true,
-
-      couponCode: true,
-
-      status: true,
-
-      paymentMethod: true,
-
-      shippingAddress: true,
-
-      shippingPhone: true,
-
-      shippingCost: true,
-
-      customerName: true,
-
-      customerEmail: true,
-
-      isPaid: true,
-
-      createdAt: true,
-
-      user: {
-        select: {
-          name: true,
-          email: true,
-        },
-      },
+    include: {
+      shippingMethod: true,
 
       items: {
-        select: {
-          id: true,
-
-          quantity: true,
-
-          price: true,
-
+        include: {
           product: {
-            select: {
-              name: true,
-              imageUrl: true,
-            },
-          },
-
-          variant: {
-            select: {
-              size: true,
-              color: true,
-              sku: true,
+            include: {
+              images: true,
+              category: true,
             },
           },
         },
@@ -404,21 +183,17 @@ export async function getOrders(page = 1, search = "") {
 // ========================
 
 export async function updateOrderStatus(formData: FormData) {
-  const allowed = await hasPermission("manage_orders");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   const id = formData.get("id") as string;
+  const status = formData.get("status") as OrderStatus;
 
-  const status = formData.get("status") as any;
+  if (!id || !status) {
+    throw new Error("Missing order id or status.");
+  }
 
   await prisma.order.update({
     where: {
       id,
     },
-
     data: {
       status,
     },

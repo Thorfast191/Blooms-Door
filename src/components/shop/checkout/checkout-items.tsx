@@ -1,8 +1,8 @@
-import CheckoutItemCard from "./checkout-item-card";
-
 interface Props {
   items: any[];
 }
+
+import CheckoutItemCard from "./checkout-item-card";
 
 export default function CheckoutItems({ items }: Props) {
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface Props {
   onExploreClick: () => void;
@@ -11,10 +12,10 @@ export default function CategoryHero({ onExploreClick }: Props) {
     <section className="relative min-h-[100svh] overflow-hidden bg-slate-950 text-white">
       {/* BACKGROUND */}
 
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-slate-950" />
 
-        <div className="absolute top-0 right-0 h-[700px] w-[700px] bg-blue-500/10 blur-[220px]" />
+        <div className="absolute right-0 top-0 h-[700px] w-[700px] bg-blue-500/10 blur-[220px]" />
 
         <div className="absolute bottom-0 left-0 h-[700px] w-[700px] bg-indigo-500/10 blur-[220px]" />
 
@@ -30,8 +31,10 @@ export default function CategoryHero({ onExploreClick }: Props) {
 
       {/* CONTENT */}
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-32 pb-20">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-32">
         <div className="grid min-h-[85vh] grid-cols-1 items-center gap-20 lg:grid-cols-2">
+          {/* LEFT */}
+
           <div>
             <p className="mb-8 text-sm uppercase tracking-[10px] text-blue-400">
               POSHMAN STYLE
@@ -56,45 +59,17 @@ export default function CategoryHero({ onExploreClick }: Props) {
               <span>✦ Most Wanted</span>
             </div>
 
-            {/* BUTTONS */}
-
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/shop"
-                className="
-                  flex
-                  h-14
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-white
-                  px-8
-                  font-semibold
-                  text-black
-                  transition-all
-                  duration-300
-                  hover:scale-105
-                "
+                className="flex h-14 items-center justify-center rounded-full bg-white px-8 font-semibold text-black transition-all duration-300 hover:scale-105"
               >
                 Shop Collection
               </Link>
 
               <button
                 onClick={onExploreClick}
-                className="
-                  flex
-                  h-14
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-white/10
-                  px-8
-                  transition-all
-                  duration-300
-                  hover:border-white/30
-                  hover:bg-white/5
-                "
+                className="flex h-14 items-center justify-center rounded-full border border-white/10 px-8 transition-all duration-300 hover:border-white/30 hover:bg-white/5"
               >
                 Explore
               </button>
@@ -105,9 +80,12 @@ export default function CategoryHero({ onExploreClick }: Props) {
 
           <div className="relative">
             <div className="relative overflow-hidden rounded-[40px] border border-white/10">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=2070&auto=format&fit=crop"
                 alt="Fashion"
+                width={2070}
+                height={3105}
+                priority
                 className="h-[620px] w-full object-cover transition-transform duration-1000 hover:scale-105"
               />
 
@@ -129,7 +107,7 @@ export default function CategoryHero({ onExploreClick }: Props) {
         </div>
       </div>
 
-      {/* BOTTOM STRIP */}
+      {/* FOOTER STRIP */}
 
       <div className="pointer-events-none absolute bottom-0 left-0 w-full border-t border-white/10 bg-black/20 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-10 px-6 py-5 text-xs uppercase tracking-[4px] text-slate-500">

@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 
-import CategoryHero from "@/components/shop/home/category-hero";
 import CategoriesShowcase from "@/components/shop/home/categories-showcase";
 import FeaturedCollection from "@/components/shop/home/featured-collection";
 import NewArrivalsSection from "@/components/shop/home/new-arrivals-section";
@@ -10,155 +9,143 @@ import CampaignBanner from "@/components/shop/home/campaign-banner";
 import HomePageClient from "@/components/shop/home/home-page-client";
 
 export default async function HomePage() {
-  const [
-    categories,
-    featuredProducts,
-    newArrivals,
-    trendingProducts,
-    bestSellers,
-  ] = await Promise.all([
-    prisma.category.findMany({
-      where: {
-        parentId: null,
-      },
+  // ==========================
+  // BEST SELLERS
+  // ==========================
 
-      include: {
-        children: {
-          orderBy: {
-            name: "asc",
-          },
+  const bestSellerItems = await prisma.orderItem.groupBy({
+    by: ["productId"],
+
+    _sum: {
+      quantity: true,
+    },
+
+    orderBy: {
+      _sum: {
+        quantity: "desc",
+      },
+    },
+
+    take: 8,
+  });
+
+  const bestSellerProducts = await prisma.product.findMany({
+    where: {
+      id: {
+        in: bestSellerItems.map((item) => item.productId),
+      },
+    },
+
+    include: {
+      category: true,
+
+      images: {
+        orderBy: {
+          sortOrder: "asc",
         },
       },
+    },
+  });
 
-      orderBy: {
-        name: "asc",
-      },
-    }),
+  const bestSellers = bestSellerItems
+    .map((item) => {
+      const product = bestSellerProducts.find(
+        (product) => product.id === item.productId,
+      );
 
-    prisma.product.findMany({
-      where: {
-        isArchived: false,
-        isFeatured: true,
-      },
+      if (!product) return null;
 
-      include: {
-        variants: {
-          where: {
-            isActive: true,
-          },
+      return {
+        ...product,
+        sold: item._sum.quantity ?? 0,
+      };
+    })
+    .filter(Boolean);
+
+  // ==========================
+  // OTHER DATA
+  // ==========================
+
+  const [categories, featuredProducts, newArrivals, trendingProducts] =
+    await Promise.all([
+      prisma.category.findMany({
+        orderBy: {
+          name: "asc",
         },
+      }),
 
-        images: true,
-      },
+      prisma.product.findMany({
+        take: 4,
 
-      take: 4,
+        include: {
+          category: true,
 
-      orderBy: {
-        createdAt: "desc",
-      },
-    }),
-
-    prisma.product.findMany({
-      where: {
-        isArchived: false,
-        isNewArrival: true,
-      },
-
-      include: {
-        variants: {
-          where: {
-            isActive: true,
-          },
-        },
-
-        images: true,
-      },
-
-      take: 8,
-
-      orderBy: {
-        createdAt: "desc",
-      },
-    }),
-
-    prisma.product.findMany({
-      where: {
-        isArchived: false,
-        isTrending: true,
-      },
-
-      include: {
-        variants: {
-          where: {
-            isActive: true,
+          images: {
+            orderBy: {
+              sortOrder: "asc",
+            },
           },
         },
 
-        images: true,
-      },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
 
-      take: 8,
+      prisma.product.findMany({
+        take: 8,
 
-      orderBy: {
-        createdAt: "desc",
-      },
-    }),
+        include: {
+          category: true,
 
-    prisma.product.findMany({
-      where: {
-        isArchived: false,
-        isBestSeller: true,
-      },
-
-      include: {
-        variants: {
-          where: {
-            isActive: true,
+          images: {
+            orderBy: {
+              sortOrder: "asc",
+            },
           },
         },
 
-        images: true,
-      },
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
 
-      take: 8,
+      prisma.product.findMany({
+        take: 8,
 
-      orderBy: {
-        createdAt: "desc",
-      },
-    }),
-  ]);
+        include: {
+          category: true,
+
+          images: {
+            orderBy: {
+              sortOrder: "asc",
+            },
+          },
+        },
+
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+    ]);
 
   return (
     <main className="overflow-x-hidden bg-slate-950 text-white">
-      {/* HERO */}
-
       <HomePageClient categories={categories} />
 
-      {/* CATEGORIES */}
-
       {categories.length > 0 && <CategoriesShowcase categories={categories} />}
-
-      {/* FEATURED COLLECTION */}
 
       {featuredProducts.length > 0 && (
         <FeaturedCollection products={featuredProducts} />
       )}
 
-      {/* NEW ARRIVALS */}
-
       {newArrivals.length > 0 && <NewArrivalsSection products={newArrivals} />}
 
-      {/* MOST WANTED */}
-
       {bestSellers.length > 0 && <BestSellersSection products={bestSellers} />}
-
-      {/* TRENDING */}
 
       {trendingProducts.length > 0 && (
         <TrendingSection products={trendingProducts} />
       )}
-
-      {/* CAMPAIGN */}
 
       <CampaignBanner />
     </main>

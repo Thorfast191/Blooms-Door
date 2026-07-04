@@ -1,36 +1,181 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PoshmanStyle
 
-## Getting Started
+A modern full-stack fashion eCommerce application built with **Next.js 16**, **React 19**, **Prisma**, **PostgreSQL**, **NextAuth v5**, **Tailwind CSS**, and **Zustand**.
 
-First, run the development server:
+The project includes a customer storefront, a protected admin dashboard, product management, order management, authentication, shopping cart, and responsive UI.
+
+---
+
+# Tech Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- NextAuth v5
+- Tailwind CSS
+- Zustand
+- React Hook Form
+- Zod
+- Cloudinary
+
+---
+
+# Features Implemented
+
+## Storefront
+
+- Home page
+- Responsive navigation
+- Category showcase
+- Featured collection
+- New arrivals section
+- Trending section
+- Best-selling products section
+- Campaign banner
+- Product listing page
+- Category product page
+- Product details page
+- Product image gallery
+- Shopping cart
+- Checkout flow foundation
+- Responsive footer
+
+## Admin Dashboard
+
+- Secure admin authentication
+- Protected admin routes
+- Admin login page
+- Product management
+- Category management
+- Shipping method management
+- Order management
+- Dashboard layout
+
+## Authentication
+
+- NextAuth v5 Credentials Provider
+- Password hashing using bcrypt
+- JWT session strategy
+- Protected admin pages
+- Automatic redirect for unauthenticated users
+
+## Database
+
+Current schema includes:
+
+- Admin
+- Category
+- Product
+- ProductImage
+- ShippingMethod
+- Order
+- OrderItem
+
+---
+
+# Project Progress
+
+## Completed
+
+- Project setup
+- Database configuration
+- Prisma integration
+- Admin authentication
+- Protected admin dashboard
+- Product CRUD implementation
+- Category CRUD implementation
+- Shipping CRUD implementation
+- Order management foundation
+- Shopping cart
+- Storefront UI
+- Responsive layouts
+- Product gallery
+- Image upload integration
+
+---
+
+# Current Status
+
+The application is feature complete enough for functional testing.
+
+Core authentication, storefront, database integration, and admin dashboard are operational.
+
+---
+
+# Next Development Tasks
+
+## Functional Testing
+
+- Test Product Create
+- Test Product Read
+- Test Product Update
+- Test Product Delete
+- Test Category CRUD
+- Test Shipping Method CRUD
+- Test Order workflow
+- Test Checkout flow
+- Test Authentication flow
+- Test Cart functionality
+
+## Frontend Debugging
+
+- Fix UI inconsistencies
+- Improve responsive layouts
+- Verify mobile navigation
+- Verify image rendering
+- Remove unused code
+- Improve loading states
+- Improve error handling
+- Improve accessibility
+- Optimize component rendering
+
+## Backend Validation
+
+- Validate all server actions
+- Validate Prisma queries
+- Improve error handling
+- Verify authentication guards
+- Verify order creation
+
+## Performance
+
+- Optimize images
+- Optimize database queries
+- Reduce unnecessary re-renders
+- Improve page loading speed
+
+---
+
+# Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Start production:
 
-## Learn More
+```bash
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Immediate Goal
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The next milestone is to perform comprehensive CRUD testing across the admin dashboard and complete frontend debugging before introducing new features.

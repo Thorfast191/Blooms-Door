@@ -3,10 +3,15 @@
 import { useState } from "react";
 
 import CategoryHero from "./category-hero";
-import AllCategoriesDrawer from "@/components/shop/home/all-categories-drawer";
+import AllCategoriesDrawer from "./all-categories-drawer";
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 interface Props {
-  categories: any[];
+  categories: Category[];
 }
 
 export default function HomePageClient({ categories }: Props) {

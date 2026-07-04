@@ -1,40 +1,30 @@
 "use client";
 
 import ShippingSelector from "./shipping-selector";
-
 import PaymentSelector from "./payment-selector";
 
 interface ShippingMethod {
   id: string;
-
   name: string;
-
   price: number;
-
   estimatedDays?: string | null;
-
   isPickup: boolean;
 }
 
 interface Props {
   fullName: string;
-
   setFullName: (value: string) => void;
 
   phone: string;
-
   setPhone: (value: string) => void;
 
   address: string;
-
   setAddress: (value: string) => void;
 
   paymentMethod: string;
-
   setPaymentMethod: (value: string) => void;
 
   selectedShippingId: string;
-
   setSelectedShippingId: (value: string) => void;
 
   shippingMethods: ShippingMethod[];
@@ -57,35 +47,41 @@ export default function CheckoutForm({
   isPickup,
 }: Props) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8">
-      <h1 className="text-4xl font-black mb-10">Checkout</h1>
+    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+      <h1 className="mb-10 text-4xl font-black">Checkout</h1>
 
       <div className="space-y-6">
         {/* NAME */}
 
         <div>
-          <label className="block mb-3 text-sm text-slate-400">Full Name</label>
+          <label className="mb-3 block text-sm text-slate-400">Full Name</label>
 
           <input
+            type="text"
+            required
+            autoComplete="name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="John Doe"
-            className="w-full h-14 px-5 rounded-2xl bg-slate-950 border border-slate-800 focus:outline-none focus:border-blue-500"
+            className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5 focus:border-blue-500 focus:outline-none"
           />
         </div>
 
         {/* PHONE */}
 
         <div>
-          <label className="block mb-3 text-sm text-slate-400">
+          <label className="mb-3 block text-sm text-slate-400">
             Phone Number
           </label>
 
           <input
+            type="tel"
+            required
+            autoComplete="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="01XXXXXXXXX"
-            className="w-full h-14 px-5 rounded-2xl bg-slate-950 border border-slate-800 focus:outline-none focus:border-blue-500"
+            className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5 focus:border-blue-500 focus:outline-none"
           />
         </div>
 
@@ -101,16 +97,18 @@ export default function CheckoutForm({
 
         {!isPickup && (
           <div>
-            <label className="block mb-3 text-sm text-slate-400">
+            <label className="mb-3 block text-sm text-slate-400">
               Shipping Address
             </label>
 
             <textarea
+              required
+              autoComplete="street-address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="House, Road, Area"
               rows={5}
-              className="w-full p-5 rounded-2xl bg-slate-950 border border-slate-800 focus:outline-none focus:border-blue-500"
+              className="w-full rounded-2xl border border-slate-800 bg-slate-950 p-5 focus:border-blue-500 focus:outline-none"
             />
           </div>
         )}

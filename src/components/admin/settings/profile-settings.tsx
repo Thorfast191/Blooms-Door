@@ -1,10 +1,9 @@
 import { updateProfile } from "@/actions/settings.actions";
 
 interface Props {
-  user: any;
+  admin: any;
 }
-
-export default function ProfileSettings({ user }: Props) {
+export default function ProfileSettings({ admin }: Props) {
   return (
     <form
       action={updateProfile}
@@ -19,7 +18,7 @@ export default function ProfileSettings({ user }: Props) {
 
         <input
           name="name"
-          defaultValue={user.name || ""}
+          defaultValue={admin.name || ""}
           className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
         />
       </div>
@@ -32,7 +31,7 @@ export default function ProfileSettings({ user }: Props) {
         <input
           type="email"
           name="email"
-          defaultValue={user.email}
+          defaultValue={admin.email}
           className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
         />
       </div>

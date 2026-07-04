@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
+import Image from "next/image";
 import { Trash2, Plus, Minus } from "lucide-react";
 
 import { useCartStore } from "@/store/cart-store";
@@ -11,28 +11,28 @@ export default function CartPage() {
     useCartStore();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white px-6 py-10">
+    <div className="min-h-screen bg-slate-950 px-6 py-10 text-white">
       {/* HEADER */}
 
-      <div className="max-w-6xl mx-auto mb-10">
+      <div className="mx-auto mb-10 max-w-6xl">
         <h1 className="text-4xl font-bold">Shopping Cart</h1>
 
-        <p className="text-slate-400 mt-2">Review your items before checkout</p>
+        <p className="mt-2 text-slate-400">Review your items before checkout</p>
       </div>
 
       {/* EMPTY */}
 
       {items.length === 0 && (
-        <div className="max-w-6xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center">
-          <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+        <div className="mx-auto max-w-6xl rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
+          <h2 className="mb-4 text-2xl font-bold">Your cart is empty</h2>
 
-          <p className="text-slate-400 mb-6">
+          <p className="mb-6 text-slate-400">
             Add products to continue shopping
           </p>
 
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center h-12 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 transition"
+            className="inline-flex h-12 items-center justify-center rounded-xl bg-blue-600 px-6 transition hover:bg-blue-700"
           >
             Continue Shopping
           </Link>
@@ -42,22 +42,24 @@ export default function CartPage() {
       {/* CART */}
 
       {items.length > 0 && (
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1fr_360px]">
           {/* ITEMS */}
 
           <div className="space-y-6">
             {items.map((item) => (
               <div
                 key={`${item.productId}-${item.variantId ?? "default"}`}
-                className="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex gap-6"
+                className="flex gap-6 rounded-3xl border border-slate-800 bg-slate-900 p-6"
               >
                 {/* IMAGE */}
 
                 {item.imageUrl ? (
-                  <img
+                  <Image
                     src={item.imageUrl}
                     alt={item.name}
-                    className="w-32 h-32 object-cover rounded-2xl border border-slate-800"
+                    width={128}
+                    height={128}
+                    className="h-32 w-32 rounded-2xl border border-slate-800 object-cover"
                   />
                 ) : (
                   <div className="flex h-32 w-32 flex-shrink-0 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950">
@@ -76,21 +78,19 @@ export default function CartPage() {
                 {/* INFO */}
 
                 <div className="flex-1">
-                  {/* TITLE */}
-
                   <h2 className="text-2xl font-bold">{item.name}</h2>
 
                   {/* VARIANTS */}
 
                   <div className="mt-3 flex flex-wrap gap-2">
                     {item.size && (
-                      <span className="px-3 py-1 rounded-lg bg-slate-800 text-xs text-slate-300 border border-slate-700">
+                      <span className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-300">
                         Size: {item.size}
                       </span>
                     )}
 
                     {item.color && (
-                      <span className="px-3 py-1 rounded-lg bg-slate-800 text-xs text-slate-300 border border-slate-700">
+                      <span className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1 text-xs text-slate-300">
                         Color: {item.color}
                       </span>
                     )}
@@ -98,12 +98,8 @@ export default function CartPage() {
 
                   {/* PRICE */}
 
-                  <div className="mt-4 flex items-center gap-3 flex-wrap">
-                    {/* FINAL PRICE */}
-
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
                     <p className="text-lg font-bold">৳ {item.price}</p>
-
-                    {/* ORIGINAL PRICE */}
 
                     {item.originalPrice && item.originalPrice > item.price && (
                       <p className="text-sm text-slate-500 line-through">
@@ -111,10 +107,8 @@ export default function CartPage() {
                       </p>
                     )}
 
-                    {/* DISCOUNT */}
-
                     {item.discountType && item.discountValue && (
-                      <span className="px-2 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">
+                      <span className="rounded-full bg-red-500/10 px-2 py-1 text-xs font-semibold text-red-400">
                         {item.discountType === "PERCENTAGE"
                           ? `${item.discountValue}% OFF`
                           : `৳${item.discountValue} OFF`}
@@ -122,27 +116,27 @@ export default function CartPage() {
                     )}
                   </div>
 
-                  {/* SUBTOTAL */}
+                  {/* ITEM SUBTOTAL */}
 
-                  <p className="text-sm text-slate-400 mt-2">
+                  <p className="mt-2 text-sm text-slate-400">
                     Subtotal: ৳ {item.price * item.quantity}
                   </p>
 
                   {/* QUANTITY */}
 
-                  <div className="flex items-center gap-3 mt-6">
+                  <div className="mt-6 flex items-center gap-3">
                     <button
                       onClick={() =>
                         decreaseQuantity(
                           `${item.productId}-${item.variantId ?? "default"}`,
                         )
                       }
-                      className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition"
+                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 transition hover:bg-slate-700"
                     >
                       <Minus size={16} />
                     </button>
 
-                    <span className="text-lg font-semibold w-8 text-center">
+                    <span className="w-8 text-center text-lg font-semibold">
                       {item.quantity}
                     </span>
 
@@ -153,7 +147,7 @@ export default function CartPage() {
                         )
                       }
                       disabled={item.quantity >= item.stock}
-                      className="w-10 h-10 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:bg-slate-700 disabled:text-slate-500 flex items-center justify-center transition"
+                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 transition hover:bg-slate-700 disabled:bg-slate-700 disabled:text-slate-500"
                     >
                       <Plus size={16} />
                     </button>
@@ -168,7 +162,7 @@ export default function CartPage() {
                       `${item.productId}-${item.variantId ?? "default"}`,
                     )
                   }
-                  className="text-red-400 hover:text-red-300 transition"
+                  className="self-start text-red-400 transition hover:text-red-300"
                 >
                   <Trash2 size={20} />
                 </button>
@@ -178,42 +172,36 @@ export default function CartPage() {
 
           {/* SUMMARY */}
 
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 h-fit sticky top-10">
-            <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+          <div className="sticky top-10 h-fit rounded-3xl border border-slate-800 bg-slate-900 p-6">
+            <h2 className="mb-6 text-2xl font-bold">Order Summary</h2>
 
             <div className="space-y-4">
-              {/* SUBTOTAL */}
-
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Subtotal</span>
 
                 <span>৳ {totalPrice()}</span>
               </div>
 
-              {/* SHIPPING */}
-
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Shipping</span>
 
-                <span>As per your requirement.</span>
+                <span className="text-sm text-slate-500">
+                  Calculated at checkout
+                </span>
               </div>
 
-              {/* TOTAL */}
-
-              <div className="border-t border-slate-800 pt-4 flex items-center justify-between text-xl font-bold">
-                <span>Total</span>
+              <div className="flex items-center justify-between border-t border-slate-800 pt-4 text-xl font-bold">
+                <span>Estimated Total</span>
 
                 <span>৳ {totalPrice()}</span>
               </div>
             </div>
 
-            {/* BUTTON */}
-
             <Link
               href="/checkout"
-              className="mt-8 w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 flex items-center justify-center font-medium transition"
+              className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-blue-600 font-medium transition hover:bg-blue-700"
             >
-              Proceed To Checkout
+              Proceed to Checkout
             </Link>
           </div>
         </div>

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import Providers from "@/components/providers/session-provider";
-
 export const metadata: Metadata = {
-  title: "PoshmanStyle",
+  title: "BloomsDoor - Premium Fashion Store",
   description: "Premium Fashion Store",
 };
 
@@ -15,9 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-950 text-white">
-        <Providers>{children}</Providers>
-      </body>
+      <body className="bg-slate-950 text-white">{children}</body>
     </html>
   );
 }

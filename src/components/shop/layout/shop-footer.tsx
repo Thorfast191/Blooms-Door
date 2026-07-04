@@ -1,119 +1,91 @@
 import Link from "next/link";
-
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 export default function ShopFooter() {
   return (
-    <footer className="bg-black border-t border-slate-800 text-white">
+    <footer className="border-t border-slate-800 bg-black text-white">
       {/* TOP */}
 
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+      <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* BRAND */}
 
           <div className="lg:col-span-2">
-            <h2 className="text-3xl font-black">POSHMANSTYLE</h2>
+            <h2 className="text-3xl font-black">BloomsDoor</h2>
 
-            <p className="text-slate-400 mt-6 leading-8 max-w-md">
-              Premium fashion marketplace focused on modern streetwear, luxury
-              aesthetics, and timeless minimal style.
+            <p className="mt-6 max-w-md leading-8 text-slate-400">
+              Premium fashion marketplace focused on modern streetwear,
+              minimalist style, and quality apparel for everyday wear.
             </p>
 
-{/* SOCIALS */}
+            {/* SOCIALS */}
 
-<div className="flex items-center gap-4 mt-8">
-  <a
-    href="https://www.facebook.com/Poshmanstyle"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Facebook"
-    className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-blue-500 hover:bg-blue-600 hover:text-white"
-  >
-    <FaFacebookF size={18} />
-  </a>
+            <div className="mt-8 flex items-center gap-4">
+              <a
+                href="https://www.facebook.com/Poshmanstyle"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-blue-500 hover:bg-blue-600"
+              >
+                <FaFacebookF size={18} />
+              </a>
 
-  <a
-    href="#"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Instagram"
-    className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-pink-500 hover:bg-pink-600 hover:text-white"
-  >
-    <FaInstagram size={18} />
-  </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-pink-500 hover:bg-pink-600"
+              >
+                <FaInstagram size={18} />
+              </a>
 
-  <a
-    href="#"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="X (Twitter)"
-    className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-sky-500 hover:bg-sky-500 hover:text-white"
-  >
-    <FaTwitter size={18} />
-  </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-sky-500 hover:bg-sky-500"
+              >
+                <FaTwitter size={18} />
+              </a>
 
-  <a
-    href="#"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="YouTube"
-    className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-red-500 hover:bg-red-600 hover:text-white"
-  >
-    <FaYoutube size={18} />
-  </a>
-</div>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition hover:border-red-500 hover:bg-red-600"
+              >
+                <FaYoutube size={18} />
+              </a>
+            </div>
           </div>
 
           {/* SHOP */}
 
           <div>
-            <h3 className="text-lg font-bold mb-6">Shop</h3>
+            <h3 className="mb-6 text-lg font-bold">Shop</h3>
 
             <div className="flex flex-col gap-4 text-slate-400">
-              <Link href="/shop" className="hover:text-white transition">
+              <Link href="/shop" className="transition hover:text-white">
                 All Products
               </Link>
 
-              <Link href="/shop" className="hover:text-white transition">
+              <Link
+                href="/new-arrivals"
+                className="transition hover:text-white"
+              >
                 New Arrivals
               </Link>
 
-              <Link href="/shop" className="hover:text-white transition">
+              <Link href="/trending" className="transition hover:text-white">
                 Trending
               </Link>
 
-              <Link href="/shop" className="hover:text-white transition">
-                Featured
-              </Link>
-            </div>
-          </div>
-
-          {/* ACCOUNT */}
-
-          <div>
-            <h3 className="text-lg font-bold mb-6">Account</h3>
-
-            <div className="flex flex-col gap-4 text-slate-400">
-              <Link href="/account" className="hover:text-white transition">
-                My Account
-              </Link>
-
-              <Link
-                href="/account/orders"
-                className="hover:text-white transition"
-              >
-                Orders
-              </Link>
-
-              <Link
-                href="/account/wishlist"
-                className="hover:text-white transition"
-              >
-                Wishlist
-              </Link>
-
-              <Link href="/cart" className="hover:text-white transition">
-                Cart
+              <Link href="/cart" className="transition hover:text-white">
+                Shopping Cart
               </Link>
             </div>
           </div>
@@ -121,22 +93,22 @@ export default function ShopFooter() {
           {/* SUPPORT */}
 
           <div>
-            <h3 className="text-lg font-bold mb-6">Support</h3>
+            <h3 className="mb-6 text-lg font-bold">Support</h3>
 
             <div className="flex flex-col gap-4 text-slate-400">
-              <Link href="/contact" className="hover:text-white transition">
-                Contact
+              <Link href="/contact" className="transition hover:text-white">
+                Contact Us
               </Link>
 
-              <Link href="/shipping" className="hover:text-white transition">
-                Shipping
+              <Link href="/shipping" className="transition hover:text-white">
+                Shipping Policy
               </Link>
 
-              <Link href="/privacy" className="hover:text-white transition">
+              <Link href="/privacy" className="transition hover:text-white">
                 Privacy Policy
               </Link>
 
-              <Link href="/terms" className="hover:text-white transition">
+              <Link href="/terms" className="transition hover:text-white">
                 Terms & Conditions
               </Link>
             </div>
@@ -146,9 +118,13 @@ export default function ShopFooter() {
 
       {/* BOTTOM */}
 
-<p className="text-slate-500 text-sm">
-  Premium Fashion • Secure Shopping • Worldwide Delivery
-</p>
+      <div className="border-t border-slate-800">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-6 text-sm text-slate-500 md:flex-row">
+          <p>© {new Date().getFullYear()} BloomsDoor. All rights reserved.</p>
+
+          <p>Premium Fashion • Secure Shopping • Fast Delivery</p>
+        </div>
+      </div>
     </footer>
   );
 }

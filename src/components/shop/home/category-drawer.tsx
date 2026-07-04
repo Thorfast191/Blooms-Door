@@ -2,16 +2,9 @@
 
 import Link from "next/link";
 
-interface ChildCategory {
-  id: string;
-  name: string;
-  slug: string;
-}
-
 interface Category {
   id: string;
   name: string;
-  children: ChildCategory[];
 }
 
 interface Props {
@@ -48,18 +41,7 @@ export default function CategoryDrawer({ category, onClose }: Props) {
 
             <button
               onClick={onClose}
-              className="
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-                rounded-full
-                border
-                border-white/10
-                transition
-                hover:border-white/30
-              "
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 transition hover:border-white/30"
             >
               ✕
             </button>
@@ -69,46 +51,21 @@ export default function CategoryDrawer({ category, onClose }: Props) {
         {/* CONTENT */}
 
         <div className="p-8">
-          {category.children?.length ? (
-            <div className="space-y-3">
-              {category.children.map((child) => (
-                <Link
-                  key={child.id}
-                  href={`/shop/category/${child.slug}`}
-                  onClick={onClose}
-                  className="
-                    group
-                    flex
-                    items-center
-                    justify-between
-                    rounded-2xl
-                    border
-                    border-white/10
-                    bg-white/[0.02]
-                    p-5
-                    transition-all
-                    duration-300
-                    hover:border-blue-400
-                    hover:bg-white/[0.05]
-                  "
-                >
-                  <div>
-                    <h3 className="font-semibold">{child.name}</h3>
+          <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8">
+            <h3 className="text-2xl font-bold">{category.name}</h3>
 
-                    <p className="mt-1 text-sm text-slate-500">View products</p>
-                  </div>
+            <p className="mt-3 text-slate-400">
+              Browse all products in this category.
+            </p>
 
-                  <span className="transition-transform group-hover:translate-x-1">
-                    →
-                  </span>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-white/10 p-6 text-center">
-              <p className="text-slate-500">No subcategories found.</p>
-            </div>
-          )}
+            <Link
+              href={`/shop/category/${category.id}`}
+              onClick={onClose}
+              className="mt-8 inline-flex h-12 items-center justify-center rounded-xl bg-blue-600 px-8 font-semibold transition hover:bg-blue-700"
+            >
+              View Products →
+            </Link>
+          </div>
         </div>
       </div>
     </>

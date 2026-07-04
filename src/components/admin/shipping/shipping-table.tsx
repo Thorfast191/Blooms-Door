@@ -20,8 +20,6 @@ export default function ShippingTable({ methods }: Props) {
 
             <th className="p-4">Delivery Time</th>
 
-            <th className="p-4">Pickup</th>
-
             <th className="p-4">Status</th>
 
             <th className="p-4">Actions</th>
@@ -39,15 +37,11 @@ export default function ShippingTable({ methods }: Props) {
 
               {/* PRICE */}
 
-              <td className="p-4">₹ {method.price}</td>
+              <td className="p-4">৳ {method.price}</td>
 
               {/* DAYS */}
 
               <td className="p-4 text-slate-400">{method.estimatedDays}</td>
-
-              {/* PICKUP */}
-
-              <td className="p-4">{method.isPickup ? "Yes" : "No"}</td>
 
               {/* STATUS */}
 

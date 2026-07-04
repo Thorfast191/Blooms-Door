@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import { uploadProductImages } from "@/actions/upload.actions";
 
+import Image from "next/image";
+
 interface Props {
   onChange: (urls: string[]) => void;
   defaultImages?: string[];
@@ -13,12 +15,8 @@ export default function ProductImageUpload({
   onChange,
   defaultImages = [],
 }: Props) {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>(defaultImages);
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    setImages(defaultImages);
-  }, [defaultImages]);
 
   async function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -99,9 +97,11 @@ export default function ProductImageUpload({
               key={`${image}-${index}`}
               className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-950"
             >
-              <img
+              <Image
                 src={image}
                 alt={`Product ${index + 1}`}
+                width={300}
+                height={300}
                 className="aspect-square w-full object-cover"
               />
 

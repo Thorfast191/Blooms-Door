@@ -54,13 +54,6 @@ export default function ShippingForm() {
         Store Pickup
       </label>
 
-      {/* ACTIVE */}
-
-      <label className="flex items-center gap-2">
-        <input type="checkbox" name="isActive" defaultChecked />
-        Active
-      </label>
-
       {/* BUTTON */}
 
       <button className="bg-blue-600 hover:bg-blue-700 h-12 px-6 rounded-lg">

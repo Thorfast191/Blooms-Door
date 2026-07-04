@@ -1,36 +1,22 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-
 import { revalidatePath } from "next/cache";
-
-import { hasPermission } from "@/lib/auth";
 
 // ======================
 // CREATE
 // ======================
 
 export async function createShippingMethod(formData: FormData) {
-  const allowed = await hasPermission("manage_products");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   const name = formData.get("name") as string;
-
   const price = Number(formData.get("price"));
-
   const estimatedDays = formData.get("estimatedDays") as string;
-
-  const isPickup = formData.get("isPickup") === "on";
 
   await prisma.shippingMethod.create({
     data: {
       name,
       price,
       estimatedDays,
-      isPickup,
     },
   });
 
@@ -42,22 +28,11 @@ export async function createShippingMethod(formData: FormData) {
 // ======================
 
 export async function updateShippingMethod(formData: FormData) {
-  const allowed = await hasPermission("manage_products");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   const id = formData.get("id") as string;
 
   const name = formData.get("name") as string;
-
   const price = Number(formData.get("price"));
-
   const estimatedDays = formData.get("estimatedDays") as string;
-
-  const isPickup = formData.get("isPickup") === "on";
-
   const isActive = formData.get("isActive") === "on";
 
   await prisma.shippingMethod.update({
@@ -69,7 +44,6 @@ export async function updateShippingMethod(formData: FormData) {
       name,
       price,
       estimatedDays,
-      isPickup,
       isActive,
     },
   });
@@ -80,12 +54,17 @@ export async function updateShippingMethod(formData: FormData) {
 // ======================
 // DELETE
 // ======================
-
 export async function deleteShippingMethod(id: string) {
-  const allowed = await hasPermission("manage_products");
+  const orderCount = await prisma.order.count({
+    where: {
+      shippingMethodId: id,
+    },
+  });
 
-  if (!allowed) {
-    throw new Error("Unauthorized");
+  if (orderCount > 0) {
+    throw new Error(
+      "This shipping method is being used by existing orders and cannot be deleted.",
+    );
   }
 
   await prisma.shippingMethod.delete({
@@ -100,7 +79,6 @@ export async function deleteShippingMethod(id: string) {
 // ======================
 // GET
 // ======================
-
 export async function getShippingMethods() {
   return prisma.shippingMethod.findMany({
     orderBy: {

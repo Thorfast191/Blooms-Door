@@ -10,19 +10,6 @@ export default async function ProductsPage() {
   const products = await getAdminProducts();
 
   const categories = await prisma.category.findMany({
-    select: {
-      id: true,
-      name: true,
-      parentId: true,
-
-      parent: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
-    },
-
     orderBy: {
       name: "asc",
     },

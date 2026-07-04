@@ -1,3 +1,7 @@
+"use client";
+
+import Image from "next/image";
+
 interface Props {
   item: any;
 }
@@ -7,10 +11,12 @@ export default function CheckoutItemCard({ item }: Props) {
     <div className="border-b border-slate-800 pb-5">
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-4">
-          <img
+          <Image
             src={item.imageUrl || "/placeholder.png"}
             alt={item.name}
-            className="w-20 h-20 rounded-2xl object-cover"
+            width={80}
+            height={80}
+            className="h-20 w-20 rounded-2xl object-cover"
           />
 
           <div>
@@ -18,15 +24,15 @@ export default function CheckoutItemCard({ item }: Props) {
 
             {/* VARIANTS */}
 
-            <div className="flex gap-2 mt-2">
+            <div className="mt-2 flex gap-2">
               {item.size && (
-                <span className="px-2 py-1 rounded-lg bg-slate-800 text-xs">
+                <span className="rounded-lg bg-slate-800 px-2 py-1 text-xs">
                   Size: {item.size}
                 </span>
               )}
 
               {item.color && (
-                <span className="px-2 py-1 rounded-lg bg-slate-800 text-xs">
+                <span className="rounded-lg bg-slate-800 px-2 py-1 text-xs">
                   Color: {item.color}
                 </span>
               )}
@@ -34,13 +40,13 @@ export default function CheckoutItemCard({ item }: Props) {
 
             {/* QUANTITY */}
 
-            <p className="text-sm text-slate-400 mt-3">Qty: {item.quantity}</p>
+            <p className="mt-3 text-sm text-slate-400">Qty: {item.quantity}</p>
 
             {/* DISCOUNT */}
 
             {item.discountType && item.discountValue && (
               <div className="mt-2">
-                <span className="px-2 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-semibold">
+                <span className="rounded-full bg-red-500/10 px-2 py-1 text-xs font-semibold text-red-400">
                   {item.discountType === "PERCENTAGE"
                     ? `${item.discountValue}% OFF`
                     : `৳${item.discountValue} OFF`}
@@ -56,7 +62,7 @@ export default function CheckoutItemCard({ item }: Props) {
           <p className="font-bold">৳ {item.price * item.quantity}</p>
 
           {item.originalPrice && item.originalPrice > item.price && (
-            <p className="text-sm text-slate-500 line-through mt-1">
+            <p className="mt-1 text-sm text-slate-500 line-through">
               ৳ {item.originalPrice * item.quantity}
             </p>
           )}

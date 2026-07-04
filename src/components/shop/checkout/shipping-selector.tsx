@@ -1,20 +1,14 @@
 interface ShippingMethod {
   id: string;
-
   name: string;
-
   price: number;
-
   estimatedDays?: string | null;
-
   isPickup: boolean;
 }
 
 interface Props {
   selectedShippingId: string;
-
   setSelectedShippingId: (value: string) => void;
-
   shippingMethods: ShippingMethod[];
 }
 
@@ -25,18 +19,20 @@ export default function ShippingSelector({
 }: Props) {
   return (
     <div>
-      <label className="block mb-3 text-sm text-slate-400">
+      <label className="mb-3 block text-sm text-slate-400">
         Shipping Method
       </label>
 
       <select
         value={selectedShippingId}
         onChange={(e) => setSelectedShippingId(e.target.value)}
-        className="w-full h-14 px-5 rounded-2xl bg-slate-950 border border-slate-800"
+        className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5"
       >
         {shippingMethods.map((method) => (
           <option key={method.id} value={method.id}>
-            {method.name} — ৳ {method.price}
+            {method.name}
+            {method.isPickup ? " (Store Pickup)" : ` • ৳ ${method.price}`}
+            {method.estimatedDays ? ` • ${method.estimatedDays}` : ""}
           </option>
         ))}
       </select>

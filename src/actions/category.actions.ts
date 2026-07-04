@@ -2,19 +2,12 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { hasPermission } from "@/lib/auth";
 
 // ========================
 // CREATE CATEGORY
 // ========================
 
 export async function createCategory(formData: FormData) {
-  const allowed = await hasPermission("manage_categories");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   const name = formData.get("name") as string;
 
   if (!name?.trim()) {
@@ -46,12 +39,6 @@ export async function createCategory(formData: FormData) {
 // ========================
 
 export async function updateCategory(formData: FormData) {
-  const allowed = await hasPermission("manage_categories");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   const id = formData.get("id") as string;
   const name = formData.get("name") as string;
 
@@ -90,12 +77,6 @@ export async function updateCategory(formData: FormData) {
 // ========================
 
 export async function deleteCategory(id: string) {
-  const allowed = await hasPermission("manage_categories");
-
-  if (!allowed) {
-    throw new Error("Unauthorized");
-  }
-
   await prisma.product.updateMany({
     where: {
       categoryId: id,

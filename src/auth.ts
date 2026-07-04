@@ -1,20 +1,13 @@
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-
 import bcrypt from "bcryptjs";
 
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID!,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-    }),
-
     Credentials({
-      name: "Credentials",
+      name: "Admin Login",
 
       credentials: {
         email: {
@@ -33,19 +26,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const user = await prisma.user.findUnique({
+        const admin = await prisma.admin.findUnique({
           where: {
             email: credentials.email as string,
           },
         });
 
-        if (!user || !user.password) {
+        if (!admin) {
           return null;
         }
 
         const valid = await bcrypt.compare(
           credentials.password as string,
-          user.password,
+          admin.password,
         );
 
         if (!valid) {
@@ -53,36 +46,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          role: user.role,
+          id: admin.id,
+          name: admin.name,
+          email: admin.email,
         };
       },
     }),
   ],
 
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === "google") {
-        const existing = await prisma.user.findUnique({
-          where: {
-            email: user.email!,
-          },
-        });
+    authorized({ auth, request }) {
+      const pathname = request.nextUrl.pathname;
 
-        if (!existing) {
-          await prisma.user.create({
-            data: {
-              name: user.name ?? "",
-              email: user.email!,
-              image: user.image,
-            },
-          });
-        }
-
-        return true;
+      if (pathname.startsWith("/admin")) {
+        return !!auth;
       }
 
       return true;
@@ -90,22 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
     async jwt({ token, user }) {
       if (user) {
-        token.id = (user as any).id;
-        token.role = (user as any).role;
-      }
-
-      if (token.email) {
-        const dbUser = await prisma.user.findUnique({
-          where: {
-            email: token.email,
-          },
-        });
-
-        if (dbUser) {
-          token.id = dbUser.id;
-          token.role = dbUser.role;
-          token.picture = dbUser.image;
-        }
+        token.id = user.id;
       }
 
       return token;
@@ -114,8 +76,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token.id;
-        (session.user as any).role = token.role;
-        session.user.image = token.picture as string | null;
       }
 
       return session;
@@ -127,7 +87,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 
   pages: {
-    signIn: "/shop/login",
+    signIn: "/admin/login",
   },
 
   secret: process.env.AUTH_SECRET,

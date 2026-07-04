@@ -18,7 +18,7 @@ export default function OrdersTable({ orders }: Props) {
 
             <th className="p-4">Total</th>
 
-            <th className="p-4">Payment</th>
+            <th className="p-4">Shipping</th>
 
             <th className="p-4">Status</th>
 
@@ -34,46 +34,36 @@ export default function OrdersTable({ orders }: Props) {
           {orders.map((order) => (
             <tr key={order.id} className="border-t border-slate-800 align-top">
               {/* CUSTOMER */}
-
               <td className="p-4">
                 <div>
-                  <p className="font-semibold">
-                    {order.customerName || order.user?.name || "Guest Customer"}
+                  <p className="font-semibold">{order.customerName}</p>
+
+                  {order.customerEmail && (
+                    <p className="text-sm text-slate-400">
+                      {order.customerEmail}
+                    </p>
+                  )}
+
+                  <p className="mt-1 text-sm text-slate-500">
+                    {order.customerPhone}
                   </p>
 
-                  {(order.customerEmail || order.user?.email) && (
-                    <p className="text-sm text-slate-400">
-                      {order.customerEmail || order.user?.email}
-                    </p>
-                  )}
-
-                  {order.shippingPhone && (
-                    <p className="mt-1 text-sm text-slate-500">
-                      {order.shippingPhone}
-                    </p>
-                  )}
-
-                  {order.shippingAddress && (
-                    <p className="mt-1 text-sm text-slate-500">
-                      {order.shippingAddress}
-                    </p>
-                  )}
+                  <p className="mt-1 text-sm text-slate-500">{order.address}</p>
                 </div>
               </td>
 
               {/* PRODUCTS */}
-
               <td className="p-4">
                 <div className="space-y-2">
                   {order.items.map((item: any) => (
                     <div key={item.id} className="rounded-lg bg-slate-950 p-2">
-                      <p className="font-medium">
-                        {item.product?.name || item.name}
-                      </p>
+                      <p className="font-medium">{item.productName}</p>
 
                       <p className="text-xs text-slate-400">
                         Qty: {item.quantity}
                       </p>
+
+                      <p className="text-xs text-slate-500">৳ {item.price}</p>
                     </div>
                   ))}
                 </div>
@@ -81,22 +71,27 @@ export default function OrdersTable({ orders }: Props) {
 
               {/* TOTAL */}
 
-              <td className="p-4 font-semibold">৳ {order.total}</td>
+              <td className="p-4">
+                <p>Subtotal: ৳ {order.subtotal}</p>
+
+                <p className="text-sm text-slate-400">
+                  Shipping: ৳ {order.shipping}
+                </p>
+
+                <p className="mt-2 font-semibold">Total: ৳ {order.total}</p>
+              </td>
 
               {/* PAYMENT */}
-
               <td className="p-4">
-                <div>
-                  <p>{order.paymentMethod}</p>
+                {order.shippingMethod ? (
+                  <div>
+                    <p>{order.shippingMethod.name}</p>
 
-                  <p
-                    className={`text-sm ${
-                      order.isPaid ? "text-green-400" : "text-yellow-400"
-                    }`}
-                  >
-                    {order.isPaid ? "Paid" : "Pending"}
-                  </p>
-                </div>
+                    <p className="text-sm text-slate-400">৳ {order.shipping}</p>
+                  </div>
+                ) : (
+                  <span className="text-slate-500">No Shipping</span>
+                )}
               </td>
 
               {/* STATUS */}
@@ -106,11 +101,15 @@ export default function OrdersTable({ orders }: Props) {
                   className={`font-medium ${
                     order.status === "DELIVERED"
                       ? "text-green-400"
-                      : order.status === "CANCELLED"
-                        ? "text-red-400"
-                        : order.status === "SHIPPED"
-                          ? "text-blue-400"
-                          : "text-yellow-400"
+                      : order.status === "SHIPPED"
+                        ? "text-blue-400"
+                        : order.status === "PROCESSING"
+                          ? "text-purple-400"
+                          : order.status === "CONFIRMED"
+                            ? "text-cyan-400"
+                            : order.status === "CANCELLED"
+                              ? "text-red-400"
+                              : "text-yellow-400"
                   }`}
                 >
                   {order.status}
@@ -134,11 +133,12 @@ export default function OrdersTable({ orders }: Props) {
                     defaultValue={order.status}
                     className="h-10 w-full rounded-lg border border-slate-800 bg-slate-950 px-3"
                   >
-                    <option value="PENDING">PENDING</option>
-                    <option value="PAID">PAID</option>
-                    <option value="SHIPPED">SHIPPED</option>
-                    <option value="DELIVERED">DELIVERED</option>
-                    <option value="CANCELLED">CANCELLED</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="CONFIRMED">Confirmed</option>
+                    <option value="PROCESSING">Processing</option>
+                    <option value="SHIPPED">Shipped</option>
+                    <option value="DELIVERED">Delivered</option>
+                    <option value="CANCELLED">Cancelled</option>
                   </select>
 
                   <button className="h-10 w-full rounded-lg bg-blue-600 text-sm hover:bg-blue-700">

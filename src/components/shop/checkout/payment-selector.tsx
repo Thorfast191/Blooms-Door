@@ -1,6 +1,5 @@
 interface Props {
   paymentMethod: string;
-
   setPaymentMethod: (value: string) => void;
 }
 
@@ -10,29 +9,21 @@ export default function PaymentSelector({
 }: Props) {
   return (
     <div>
-      <label className="block mb-3 text-sm text-slate-400">
+      <label className="mb-3 block text-sm text-slate-400">
         Payment Method
       </label>
 
       <select
         value={paymentMethod}
         onChange={(e) => setPaymentMethod(e.target.value)}
-        className="w-full h-14 px-5 rounded-2xl bg-slate-950 border border-slate-800"
+        className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5"
       >
-        <option value="COD">Cash On Delivery</option>
-
-        <option value="BKASH" disabled>
-          bKash (Coming Soon)
-        </option>
-
-        <option value="NAGAD" disabled>
-          Nagad (Coming Soon)
-        </option>
-
-        <option value="STRIPE" disabled>
-          Stripe (Coming Soon)
-        </option>
+        <option value="COD">Cash on Delivery (COD)</option>
       </select>
+
+      <p className="mt-2 text-sm text-slate-500">
+        Online payment methods will be available soon.
+      </p>
     </div>
   );
 }

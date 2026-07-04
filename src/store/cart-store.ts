@@ -3,32 +3,10 @@ import { persist } from "zustand/middleware";
 
 interface CartItem {
   productId: string;
-
-  variantId?: string;
-
   name: string;
-
-  slug: string;
-
   imageUrl?: string | null;
-
-  size?: string | null;
-
-  color?: string | null;
-
-  sku?: string | null;
-
   price: number;
-
-  originalPrice?: number;
-
-  discountType?: string | null;
-
-  discountValue?: number | null;
-
   quantity: number;
-
-  stock: number;
 }
 
 interface CartStore {
@@ -36,11 +14,11 @@ interface CartStore {
 
   addItem: (item: CartItem) => void;
 
-  removeItem: (itemKey: string) => void;
+  removeItem: (productId: string) => void;
 
-  increaseQuantity: (itemKey: string) => void;
+  increaseQuantity: (productId: string) => void;
 
-  decreaseQuantity: (itemKey: string) => void;
+  decreaseQuantity: (productId: string) => void;
 
   clearCart: () => void;
 
@@ -48,9 +26,6 @@ interface CartStore {
 
   totalPrice: () => number;
 }
-
-const getItemKey = (item: CartItem) =>
-  `${item.productId}-${item.variantId ?? "default"}`;
 
 export const useCartStore = create<CartStore>()(
   persist(
@@ -63,17 +38,17 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (item) =>
         set((state) => {
-          const itemKey = getItemKey(item);
-
-          const existing = state.items.find((i) => getItemKey(i) === itemKey);
+          const existing = state.items.find(
+            (i) => i.productId === item.productId,
+          );
 
           if (existing) {
             return {
               items: state.items.map((i) =>
-                getItemKey(i) === itemKey
+                i.productId === item.productId
                   ? {
                       ...i,
-                      quantity: Math.min(i.quantity + item.quantity, i.stock),
+                      quantity: i.quantity + item.quantity,
                     }
                   : i,
               ),
@@ -86,25 +61,25 @@ export const useCartStore = create<CartStore>()(
         }),
 
       // ========================
-      // REMOVE ITEM
+      // REMOVE
       // ========================
 
-      removeItem: (itemKey) =>
+      removeItem: (productId) =>
         set((state) => ({
-          items: state.items.filter((item) => getItemKey(item) !== itemKey),
+          items: state.items.filter((item) => item.productId !== productId),
         })),
 
       // ========================
       // INCREASE
       // ========================
 
-      increaseQuantity: (itemKey) =>
+      increaseQuantity: (productId) =>
         set((state) => ({
           items: state.items.map((item) =>
-            getItemKey(item) === itemKey
+            item.productId === productId
               ? {
                   ...item,
-                  quantity: Math.min(item.quantity + 1, item.stock),
+                  quantity: item.quantity + 1,
                 }
               : item,
           ),
@@ -114,11 +89,11 @@ export const useCartStore = create<CartStore>()(
       // DECREASE
       // ========================
 
-      decreaseQuantity: (itemKey) =>
+      decreaseQuantity: (productId) =>
         set((state) => ({
           items: state.items
             .map((item) =>
-              getItemKey(item) === itemKey
+              item.productId === productId
                 ? {
                     ...item,
                     quantity: item.quantity - 1,
@@ -132,24 +107,21 @@ export const useCartStore = create<CartStore>()(
       // CLEAR
       // ========================
 
-      clearCart: () =>
-        set({
-          items: [],
-        }),
+      clearCart: () => set({ items: [] }),
 
       // ========================
       // TOTAL ITEMS
       // ========================
 
       totalItems: () =>
-        get().items.reduce((acc, item) => acc + item.quantity, 0),
+        get().items.reduce((sum, item) => sum + item.quantity, 0),
 
       // ========================
       // TOTAL PRICE
       // ========================
 
       totalPrice: () =>
-        get().items.reduce((acc, item) => acc + item.price * item.quantity, 0),
+        get().items.reduce((sum, item) => sum + item.price * item.quantity, 0),
     }),
     {
       name: "cart-storage",

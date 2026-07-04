@@ -1,7 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
-  products: any[];
+  products: {
+    id: string;
+    name: string;
+    price: number;
+    images: {
+      imageUrl: string;
+    }[];
+  }[];
 }
 
 export default function RelatedProducts({ products }: Props) {
@@ -11,27 +19,35 @@ export default function RelatedProducts({ products }: Props) {
 
   return (
     <div className="mt-20">
-      <h2 className="text-3xl font-bold mb-10">Related Products</h2>
+      <h2 className="mb-10 text-3xl font-bold">Related Products</h2>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
         {products.map((product) => (
           <Link
             key={product.id}
-            href={`/shop/${product.slug}`}
-            className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:scale-[1.02] transition"
+            href={`/shop/${product.id}`}
+            className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 transition hover:scale-[1.02] hover:border-blue-500"
           >
-            {product.imageUrl && (
-              <img
-                src={product.imageUrl}
+            {product.images.length > 0 ? (
+              <Image
+                src={product.images[0].imageUrl}
                 alt={product.name}
-                className="w-full h-72 object-cover"
+                width={400}
+                height={500}
+                className="h-72 w-full object-cover"
               />
+            ) : (
+              <div className="flex h-72 items-center justify-center bg-slate-950 text-slate-500">
+                No Image
+              </div>
             )}
 
             <div className="p-4">
-              <h3 className="font-bold">{product.name}</h3>
+              <h3 className="line-clamp-2 font-bold">{product.name}</h3>
 
-              <p className="text-slate-400 mt-2">₹ {product.price}</p>
+              <p className="mt-2 font-semibold text-slate-300">
+                ৳ {product.price.toFixed(2)}
+              </p>
             </div>
           </Link>
         ))}

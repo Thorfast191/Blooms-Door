@@ -9,14 +9,14 @@ import PasswordSettings from "@/components/admin/settings/password-settings";
 export default async function SettingsPage() {
   const session = await auth();
 
-  const user = await prisma.user.findUnique({
+  const admin = await prisma.admin.findUnique({
     where: {
       email: session?.user?.email || "",
     },
   });
 
-  if (!user) {
-    return <div>User not found</div>;
+  if (!admin) {
+    return <div>Admin not found</div>;
   }
 
   return (
@@ -31,7 +31,7 @@ export default async function SettingsPage() {
 
       {/* PROFILE */}
 
-      <ProfileSettings user={user} />
+      <ProfileSettings admin={admin} />
 
       {/* PASSWORD */}
 

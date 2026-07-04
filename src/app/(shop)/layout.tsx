@@ -1,8 +1,6 @@
 import ShopNavbar from "@/components/shop/navbar/shop-navbar";
 import ShopFooter from "@/components/shop/layout/shop-footer";
 
-import PageViewTracker from "@/components/shop/analytics/page-view-tracker";
-
 export default function ShopLayout({
   children,
 }: {
@@ -10,8 +8,6 @@ export default function ShopLayout({
 }) {
   return (
     <>
-      <PageViewTracker />
-
       <ShopNavbar />
 
       {children}

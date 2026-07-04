@@ -1,12 +1,10 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import { revalidatePath } from "next/cache";
 
 import { auth } from "@/auth";
-
 import { prisma } from "@/lib/prisma";
-
-import { revalidatePath } from "next/cache";
 
 export async function updateProfile(formData: FormData) {
   const session = await auth();
@@ -16,14 +14,12 @@ export async function updateProfile(formData: FormData) {
   }
 
   const name = formData.get("name") as string;
-
   const email = formData.get("email") as string;
 
-  await prisma.user.update({
+  await prisma.admin.update({
     where: {
       email: session.user.email,
     },
-
     data: {
       name,
       email,
@@ -41,34 +37,32 @@ export async function changePassword(formData: FormData) {
   }
 
   const currentPassword = formData.get("currentPassword") as string;
-
   const newPassword = formData.get("newPassword") as string;
 
-  const user = await prisma.user.findUnique({
+  const admin = await prisma.admin.findUnique({
     where: {
       email: session.user.email,
     },
   });
 
-  if (!user || !user.password) {
-    throw new Error("User not found");
+  if (!admin) {
+    throw new Error("Admin not found");
   }
 
-  const valid = await bcrypt.compare(currentPassword, user.password);
+  const valid = await bcrypt.compare(currentPassword, admin.password);
 
   if (!valid) {
-    throw new Error("Incorrect password");
+    throw new Error("Current password is incorrect.");
   }
 
-  const hashed = await bcrypt.hash(newPassword, 10);
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-  await prisma.user.update({
+  await prisma.admin.update({
     where: {
-      id: user.id,
+      id: admin.id,
     },
-
     data: {
-      password: hashed,
+      password: hashedPassword,
     },
   });
 
