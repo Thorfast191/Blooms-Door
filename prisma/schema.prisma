@@ -35,6 +35,8 @@ model Product {
 
   price Float
 
+  stock Int @default(0)
+
   categoryId String?
 
   createdAt DateTime @default(now())

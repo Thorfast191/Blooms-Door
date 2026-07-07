@@ -21,6 +21,7 @@ export default function ProductsTable({ products }: Props) {
             <th className="p-5 text-left">Product</th>
             <th className="p-5 text-left">Category</th>
             <th className="p-5 text-left">Price</th>
+            <th className="p-5 text-left">Stock</th>
             <th className="p-5 text-left">Description</th>
             <th className="p-5 text-left">Actions</th>
           </tr>
@@ -57,6 +58,9 @@ export default function ProductsTable({ products }: Props) {
 
               {/* Price */}
               <td className="p-5 font-semibold">৳ {product.price}</td>
+
+              {/* Stock */}
+              <td className="p-5">{product.stock}</td>
 
               {/* Description */}
               <td className="max-w-sm p-5">

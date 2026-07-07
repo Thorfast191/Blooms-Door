@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: Props) {
               description: product.description,
               imageUrl: galleryImages[0] ?? null,
               price: product.price,
-              stock: 999, // replace with a stock field later if you add one
+              stock: product.stock, // replace with a stock field later if you add one
               category: product.category,
             }}
           />

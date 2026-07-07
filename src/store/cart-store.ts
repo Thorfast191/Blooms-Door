@@ -6,6 +6,7 @@ interface CartItem {
   name: string;
   imageUrl?: string | null;
   price: number;
+  stock: number;
   quantity: number;
 }
 
@@ -13,17 +14,12 @@ interface CartStore {
   items: CartItem[];
 
   addItem: (item: CartItem) => void;
-
   removeItem: (productId: string) => void;
-
   increaseQuantity: (productId: string) => void;
-
   decreaseQuantity: (productId: string) => void;
-
   clearCart: () => void;
 
   totalItems: () => number;
-
   totalPrice: () => number;
 }
 
@@ -31,10 +27,6 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
-
-      // ========================
-      // ADD ITEM
-      // ========================
 
       addItem: (item) =>
         set((state) => {
@@ -48,7 +40,11 @@ export const useCartStore = create<CartStore>()(
                 i.productId === item.productId
                   ? {
                       ...i,
-                      quantity: i.quantity + item.quantity,
+                      stock: item.stock,
+                      quantity: Math.min(
+                        i.quantity + item.quantity,
+                        item.stock,
+                      ),
                     }
                   : i,
               ),
@@ -56,69 +52,53 @@ export const useCartStore = create<CartStore>()(
           }
 
           return {
-            items: [...state.items, item],
+            items: [
+              ...state.items,
+              {
+                ...item,
+                stock: item.stock,
+                quantity: Math.min(item.quantity, item.stock),
+              },
+            ],
           };
         }),
-
-      // ========================
-      // REMOVE
-      // ========================
 
       removeItem: (productId) =>
         set((state) => ({
           items: state.items.filter((item) => item.productId !== productId),
         })),
 
-      // ========================
-      // INCREASE
-      // ========================
-
       increaseQuantity: (productId) =>
         set((state) => ({
-          items: state.items.map((item) =>
-            item.productId === productId
-              ? {
-                  ...item,
-                  quantity: item.quantity + 1,
-                }
-              : item,
-          ),
-        })),
+          items: state.items.map((item) => {
+            if (item.productId !== productId) return item;
 
-      // ========================
-      // DECREASE
-      // ========================
+            return {
+              ...item,
+              quantity:
+                item.quantity < item.stock ? item.quantity + 1 : item.quantity,
+            };
+          }),
+        })),
 
       decreaseQuantity: (productId) =>
         set((state) => ({
           items: state.items
-            .map((item) =>
-              item.productId === productId
-                ? {
-                    ...item,
-                    quantity: item.quantity - 1,
-                  }
-                : item,
-            )
+            .map((item) => {
+              if (item.productId !== productId) return item;
+
+              return {
+                ...item,
+                quantity: item.quantity - 1,
+              };
+            })
             .filter((item) => item.quantity > 0),
         })),
 
-      // ========================
-      // CLEAR
-      // ========================
-
       clearCart: () => set({ items: [] }),
-
-      // ========================
-      // TOTAL ITEMS
-      // ========================
 
       totalItems: () =>
         get().items.reduce((sum, item) => sum + item.quantity, 0),
-
-      // ========================
-      // TOTAL PRICE
-      // ========================
 
       totalPrice: () =>
         get().items.reduce((sum, item) => sum + item.price * item.quantity, 0),

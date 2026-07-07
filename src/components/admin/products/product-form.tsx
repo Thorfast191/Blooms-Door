@@ -87,6 +87,16 @@ export default function ProductForm({ categories, product }: Props) {
         className="h-12 w-full rounded-xl border border-slate-800 bg-slate-950 px-4"
       />
 
+      <input
+        type="number"
+        name="stock"
+        required
+        step="1"
+        defaultValue={product?.stock}
+        placeholder="Stock"
+        className="h-12 w-full rounded-xl border border-slate-800 bg-slate-950 px-4"
+      />
+
       <select
         name="categoryId"
         defaultValue={product?.categoryId ?? ""}

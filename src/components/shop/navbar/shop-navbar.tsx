@@ -37,7 +37,7 @@ export default function ShopNavbar() {
             href="/"
             className="text-xl font-black tracking-wide lg:text-2xl"
           >
-            POSHMANSTYLE
+            Bloom`s Door`
           </Link>
 
           {/* DESKTOP NAV */}
@@ -57,22 +57,11 @@ export default function ShopNavbar() {
             >
               New Arrivals
             </Link>
-
-            <Link href="/trending" className="transition hover:text-blue-400">
-              Trending
-            </Link>
           </nav>
 
           {/* ACTIONS */}
 
           <div className="flex items-center gap-5">
-            <Link
-              href="/account"
-              className="hidden transition hover:text-blue-400 md:block"
-            >
-              <User size={22} />
-            </Link>
-
             <Link
               href="/cart"
               className="relative transition hover:text-blue-400"
@@ -111,14 +100,6 @@ export default function ShopNavbar() {
 
             <Link href="/new-arrivals" onClick={() => setMobileOpen(false)}>
               New Arrivals
-            </Link>
-
-            <Link href="/trending" onClick={() => setMobileOpen(false)}>
-              Trending
-            </Link>
-
-            <Link href="/account" onClick={() => setMobileOpen(false)}>
-              Account
             </Link>
 
             <Link href="/cart" onClick={() => setMobileOpen(false)}>

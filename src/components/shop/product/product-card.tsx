@@ -11,12 +11,12 @@ interface Props {
     id: string;
     name: string;
     price: number;
+    stock: number;
     images?: {
       imageUrl: string;
     }[];
   };
 }
-
 export default function ProductCard({ product }: Props) {
   const addItem = useCartStore((state) => state.addItem);
 
@@ -28,6 +28,7 @@ export default function ProductCard({ product }: Props) {
       name: product.name,
       imageUrl: image,
       price: product.price,
+      stock: product.stock,
       quantity: 1,
     });
   }

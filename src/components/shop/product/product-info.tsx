@@ -40,14 +40,22 @@ export default function ProductInfo({ product }: Props) {
   }
 
   function addProductToCart() {
-    addItem({
+    console.log("quantity =", quantity);
+
+    console.log("product =", product);
+
+    const cartItem = {
       productId: product.id,
       name: product.name,
       imageUrl: product.imageUrl,
       price: product.price,
-      quantity,
       stock: product.stock,
-    });
+      quantity,
+    };
+
+    console.log("cartItem =", cartItem);
+
+    addItem(cartItem);
   }
 
   function handleAddToCart() {

@@ -7,6 +7,7 @@ export async function createProduct(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = Number(formData.get("price"));
+  const stock = Number(formData.get("stock"));
   const categoryId = (formData.get("categoryId") as string) || null;
 
   const images = formData.getAll("images") as string[];
@@ -16,6 +17,7 @@ export async function createProduct(formData: FormData) {
       name,
       description,
       price,
+      stock,
       categoryId,
 
       images: {
@@ -37,6 +39,7 @@ export async function updateProduct(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = Number(formData.get("price"));
+  const stock = Number(formData.get("stock"));
   const categoryId = (formData.get("categoryId") as string) || null;
 
   const images = formData.getAll("images") as string[];
@@ -50,6 +53,7 @@ export async function updateProduct(formData: FormData) {
       name,
       description,
       price,
+      stock,
       categoryId,
 
       images: {
