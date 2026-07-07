@@ -1,10 +1,10 @@
 import { getDashboardAnalytics } from "@/actions/dashboard.actions";
 
 import DashboardCard from "@/components/admin/dashboard/dashboard-card";
-import RecentOrders from "@/components/admin/dashboard/recent-orders";
-import TopProducts from "@/components/admin/dashboard/top-products";
-import RevenueChart from "@/components/admin/dashboard/revenue-chart";
-import RecentCustomers from "@/components/admin/dashboard/recent-customers";
+// import RecentOrders from "@/components/admin/dashboard/recent-orders";
+// import TopProducts from "@/components/admin/dashboard/top-products";
+// import RevenueChart from "@/components/admin/dashboard/revenue-chart";
+// import RecentCustomers from "@/components/admin/dashboard/recent-customers";
 
 export default async function AdminDashboardPage() {
   const analytics = await getDashboardAnalytics();
@@ -36,22 +36,22 @@ export default async function AdminDashboardPage() {
         {/* ORDERS */}
 
         <DashboardCard title="Orders" value={analytics.totalOrders} />
-
-        <DashboardCard title="Pending Orders" value={analytics.pendingOrders} />
+        {/* 
+        <DashboardCard title="Pending Orders" value={analytics.pendingOrders} /> */}
 
         {/* CUSTOMERS */}
 
-        <DashboardCard title="Customers" value={analytics.totalCustomers} />
+        {/* <DashboardCard title="Customers" value={analytics.totalCustomers} /> */}
 
         {/* PRODUCTS */}
 
         <DashboardCard title="Products" value={analytics.totalProducts} />
 
-        <DashboardCard title="Low Stock" value={analytics.lowStockProducts} />
+        {/* <DashboardCard title="Low Stock" value={analytics.lowStockProducts} /> */}
 
         {/* VISITORS */}
 
-        <DashboardCard
+        {/* <DashboardCard
           title="Visitors Today"
           value={analytics.visitorsToday || 0}
         />
@@ -59,11 +59,11 @@ export default async function AdminDashboardPage() {
         <DashboardCard
           title="Total Visitors"
           value={analytics.totalVisitors || 0}
-        />
+        /> */}
 
         {/* SALES */}
 
-        <DashboardCard
+        {/* <DashboardCard
           title="Avg Order Value"
           value={`৳ ${analytics.averageOrderValue}`}
         />
@@ -71,11 +71,11 @@ export default async function AdminDashboardPage() {
         <DashboardCard
           title="Conversion Rate"
           value={`${analytics.conversionRate}%`}
-        />
+        /> */}
 
         {/* ANALYTICS FUNNEL */}
 
-        <DashboardCard
+        {/* <DashboardCard
           title="Product Views"
           value={analytics.productViews || 0}
         />
@@ -102,24 +102,24 @@ export default async function AdminDashboardPage() {
         <DashboardCard
           title="Purchase Rate"
           value={`${analytics.purchaseRate || 0}%`}
-        />
+        /> */}
       </div>
 
       {/* CHART */}
 
-      <RevenueChart data={analytics.revenueChart} />
+      {/* <RevenueChart data={analytics.revenueChart} /> */}
 
       {/* TABLES */}
-
+      {/* 
       <div className="grid xl:grid-cols-2 gap-6">
         <RecentOrders orders={analytics.recentOrders} />
 
         <TopProducts products={analytics.topProducts} />
-      </div>
+      </div> */}
 
       {/* CUSTOMERS */}
 
-      <RecentCustomers customers={analytics.recentCustomers} />
+      {/* <RecentCustomers customers={analytics.recentCustomers} /> */}
     </div>
   );
 }
