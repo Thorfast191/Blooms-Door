@@ -9,107 +9,82 @@ datasource db {
 }
 
 model Admin {
-  id String @id @default(cuid())
-
-  name     String
-  email    String @unique
-  password String
-
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  products Product[]
+  id        String    @id @default(cuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
 }
 
 model Product {
-  id          String  @id @default(cuid())
+  id          String         @id @default(cuid())
   name        String
   description String?
-
-  price Float
-
-  stock Int @default(0)
-
-  categoryId String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  category   Category?      @relation(fields: [categoryId], references: [id])
-  images     ProductImage[]
-  orderItems OrderItem[]
+  categoryId  String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  price       Float
+  stock       Int            @default(0)
+  orderItems  OrderItem[]
+  category    Category?      @relation(fields: [categoryId], references: [id])
+  images      ProductImage[]
 }
 
 model ProductImage {
-  id        String @id @default(cuid())
+  id        String   @id @default(cuid())
   productId String
   imageUrl  String
-  sortOrder Int    @default(0)
-
+  sortOrder Int      @default(0)
   createdAt DateTime @default(now())
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model ShippingMethod {
-  id            String  @id @default(cuid())
+  id            String   @id @default(cuid())
   name          String
   price         Float
   estimatedDays String?
-
-  isActive Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orders Order[]
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  orders        Order[]
 }
 
 model Order {
-  id String @id @default(cuid())
-
-  customerName  String
-  customerPhone String
-  customerEmail String?
-
-  address String
-
+  id               String          @id @default(cuid())
+  total            Float
+  status           OrderStatus     @default(PENDING)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
   shippingMethodId String?
-
-  subtotal Float
-  shipping Float
-  total    Float
-
-  status OrderStatus @default(PENDING)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  shippingMethod ShippingMethod? @relation(fields: [shippingMethodId], references: [id])
-
-  items OrderItem[]
+  customerEmail    String?
+  customerName     String
+  address          String
+  customerPhone    String
+  shipping         Float
+  subtotal         Float
+  shippingMethod   ShippingMethod? @relation(fields: [shippingMethodId], references: [id])
+  items            OrderItem[]
 }
 
 model OrderItem {
-  id String @id @default(cuid())
-
-  orderId   String
-  productId String
-
-  productName String
+  id          String  @id @default(cuid())
+  orderId     String
+  productId   String
+  quantity    Int
   price       Float
-
-  quantity Int
-
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id])
+  productName String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [id])
 }
 
 enum OrderStatus {

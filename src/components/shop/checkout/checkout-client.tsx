@@ -102,18 +102,18 @@ export default function CheckoutClient({ shippingMethods }: Props) {
       setLoading(true);
 
       const order = await createOrder({
-        items: items.map((item) => ({
-          productId: item.productId,
-          variantId: item.variantId,
-          quantity: item.quantity,
-        })),
+        customerName: fullName,
+        customerPhone: phone,
+        customerEmail: undefined,
+
+        address,
 
         shippingMethodId: selectedShippingId,
-        shippingCost,
-        shippingAddress: address,
-        shippingPhone: phone,
-        customerName: fullName,
-        paymentMethod,
+
+        items: items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
       });
 
       clearCart();
