@@ -10,21 +10,28 @@ interface Props {
 
 export default function RecentCustomers({ customers }: Props) {
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-      <h2 className="mb-6 text-2xl font-bold">Recent Customers</h2>
+    <div className="rounded-2xl border border-slate-300 bg-white p-6 shadow-md">
+      <h2 className="mb-6 text-2xl font-bold text-slate-800">
+        Recent Customers
+      </h2>
 
       <div className="space-y-4">
         {customers.length === 0 ? (
-          <p className="text-slate-400">No customers yet.</p>
+          <p className="text-slate-500">No customers yet.</p>
         ) : (
           customers.map((customer) => (
-            <div key={customer.id} className="border-b border-slate-800 pb-3">
-              <p className="font-semibold">{customer.customerName}</p>
+            <div
+              key={customer.id}
+              className="border-b border-slate-200 pb-3 last:border-b-0"
+            >
+              <p className="font-semibold text-slate-800">
+                {customer.customerName}
+              </p>
 
-              <p className="text-sm text-slate-400">{customer.customerPhone}</p>
+              <p className="text-sm text-slate-600">{customer.customerPhone}</p>
 
               {customer.customerEmail && (
-                <p className="text-xs text-slate-500">
+                <p className="text-sm text-slate-500">
                   {customer.customerEmail}
                 </p>
               )}

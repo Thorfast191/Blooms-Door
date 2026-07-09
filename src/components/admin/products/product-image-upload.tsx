@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Upload, X } from "lucide-react";
 import { uploadProductImages } from "@/actions/upload.actions";
 
@@ -62,22 +62,22 @@ export default function ProductImageUpload({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <h3 className="font-semibold">Product Images</h3>
+        <h3 className="text-lg font-semibold text-slate-800">Product Images</h3>
 
-        <p className="text-sm text-slate-400">Upload up to 5 images</p>
+        <p className="text-sm text-slate-500">Upload up to 5 images</p>
       </div>
 
-      <label className="flex h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-700 bg-slate-950 transition hover:border-blue-500">
-        <Upload size={32} />
+      <label className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-amber-500 hover:bg-amber-50">
+        <Upload size={34} className="text-slate-500" />
 
-        <span className="mt-3 text-sm text-slate-400">
+        <span className="mt-4 text-sm font-medium text-slate-700">
           {uploading ? "Uploading..." : "Click to upload images"}
         </span>
 
         <span className="mt-1 text-xs text-slate-500">
-          JPG, PNG, WEBP (max 5)
+          JPG, PNG, WEBP (Maximum 5 Images)
         </span>
 
         <input
@@ -95,7 +95,7 @@ export default function ProductImageUpload({
           {images.map((image, index) => (
             <div
               key={`${image}-${index}`}
-              className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-950"
+              className="relative overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm"
             >
               <Image
                 src={image}
@@ -106,7 +106,7 @@ export default function ProductImageUpload({
               />
 
               {index === 0 && (
-                <div className="absolute left-2 top-2 rounded bg-blue-600 px-2 py-1 text-xs font-semibold">
+                <div className="absolute left-2 top-2 rounded-lg bg-amber-500 px-2 py-1 text-xs font-semibold text-white shadow">
                   Cover
                 </div>
               )}
@@ -114,7 +114,7 @@ export default function ProductImageUpload({
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-red-500"
+                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow transition hover:bg-red-600"
               >
                 <X size={14} />
               </button>

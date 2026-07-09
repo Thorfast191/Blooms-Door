@@ -1,5 +1,4 @@
 import { deleteShippingMethod } from "@/actions/shipping.actions";
-
 import { Trash2 } from "lucide-react";
 
 interface Props {
@@ -8,12 +7,12 @@ interface Props {
 
 export default function ShippingTable({ methods }: Props) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+    <div className="overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-md">
       <table className="w-full">
         {/* HEADER */}
 
-        <thead className="bg-slate-950">
-          <tr className="text-left">
+        <thead className="bg-slate-100">
+          <tr className="text-left text-slate-700">
             <th className="p-4">Name</th>
 
             <th className="p-4">Cost</th>
@@ -30,10 +29,13 @@ export default function ShippingTable({ methods }: Props) {
 
         <tbody>
           {methods.map((method) => (
-            <tr key={method.id} className="border-t border-slate-800">
+            <tr
+              key={method.id}
+              className="border-t border-slate-200 text-slate-700"
+            >
               {/* NAME */}
 
-              <td className="p-4 font-medium">{method.name}</td>
+              <td className="p-4 font-semibold">{method.name}</td>
 
               {/* PRICE */}
 
@@ -41,15 +43,17 @@ export default function ShippingTable({ methods }: Props) {
 
               {/* DAYS */}
 
-              <td className="p-4 text-slate-400">{method.estimatedDays}</td>
+              <td className="p-4 text-slate-500">
+                {method.estimatedDays || "-"}
+              </td>
 
               {/* STATUS */}
 
               <td className="p-4">
                 {method.isActive ? (
-                  <span className="text-green-400">Active</span>
+                  <span className="font-medium text-green-600">Active</span>
                 ) : (
-                  <span className="text-red-400">Disabled</span>
+                  <span className="font-medium text-red-500">Disabled</span>
                 )}
               </td>
 
@@ -59,11 +63,13 @@ export default function ShippingTable({ methods }: Props) {
                 <form
                   action={async () => {
                     "use server";
-
                     await deleteShippingMethod(method.id);
                   }}
                 >
-                  <button className="bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2 rounded-lg">
+                  <button
+                    className="rounded-lg bg-red-100 p-2 text-red-500 transition hover:bg-red-200"
+                    title="Delete Shipping Method"
+                  >
                     <Trash2 size={18} />
                   </button>
                 </form>

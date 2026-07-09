@@ -47,16 +47,16 @@ export default function ProductForm({ categories, product }: Props) {
   return (
     <form
       action={action}
-      className="space-y-6 rounded-3xl border border-slate-800 bg-slate-900 p-8"
+      className="space-y-6 rounded-3xl border border-slate-300 bg-white p-8 shadow-md"
     >
       {product && <input type="hidden" name="id" value={product.id} />}
 
       <div>
-        <h2 className="text-3xl font-black">
+        <h2 className="text-3xl font-black text-slate-800">
           {product ? "Update Product" : "Create Product"}
         </h2>
 
-        <p className="mt-2 text-slate-400">Manage your products</p>
+        <p className="mt-2 text-slate-500">Manage your products</p>
       </div>
 
       <input
@@ -65,14 +65,14 @@ export default function ProductForm({ categories, product }: Props) {
         required
         placeholder="Product Name"
         defaultValue={product?.name}
-        className="h-12 w-full rounded-xl border border-slate-800 bg-slate-950 px-4"
+        className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
       />
 
       <textarea
         name="description"
         placeholder="Product Description"
         defaultValue={product?.description}
-        className="min-h-[150px] w-full rounded-xl border border-slate-800 bg-slate-950 p-4"
+        className="min-h-[150px] w-full rounded-xl border border-slate-300 bg-white p-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
       />
 
       <ProductImageUpload defaultImages={images} onChange={setImages} />
@@ -84,7 +84,7 @@ export default function ProductForm({ categories, product }: Props) {
         step="0.01"
         defaultValue={product?.price}
         placeholder="Price"
-        className="h-12 w-full rounded-xl border border-slate-800 bg-slate-950 px-4"
+        className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
       />
 
       <input
@@ -94,13 +94,13 @@ export default function ProductForm({ categories, product }: Props) {
         step="1"
         defaultValue={product?.stock}
         placeholder="Stock"
-        className="h-12 w-full rounded-xl border border-slate-800 bg-slate-950 px-4"
+        className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
       />
 
       <select
         name="categoryId"
         defaultValue={product?.categoryId ?? ""}
-        className="h-12 w-full rounded-xl border border-slate-800 bg-slate-950 px-4"
+        className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-slate-800 focus:border-amber-500 focus:outline-none"
       >
         <option value="">Select Category</option>
 
@@ -117,7 +117,7 @@ export default function ProductForm({ categories, product }: Props) {
 
       <button
         disabled={loading}
-        className="h-12 rounded-xl bg-blue-600 px-8 font-semibold hover:bg-blue-700 disabled:bg-slate-700"
+        className="h-12 rounded-xl bg-amber-500 px-8 font-semibold text-white transition hover:bg-amber-600 disabled:bg-slate-300"
       >
         {loading ? "Saving..." : product ? "Update Product" : "Create Product"}
       </button>

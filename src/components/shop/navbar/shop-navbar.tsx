@@ -51,6 +51,10 @@ export default function ShopNavbar() {
               Shop
             </Link>
 
+            <Link href="/categories" className="transition hover:text-blue-400">
+              Categories
+            </Link>
+
             <Link
               href="/new-arrivals"
               className="transition hover:text-blue-400"

@@ -3,42 +3,47 @@ import { updateProfile } from "@/actions/settings.actions";
 interface Props {
   admin: any;
 }
+
 export default function ProfileSettings({ admin }: Props) {
   return (
     <form
       action={updateProfile}
-      className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4"
+      className="space-y-6 rounded-2xl border border-slate-300 bg-white p-8 shadow-md"
     >
-      <h2 className="text-2xl font-bold">Profile Settings</h2>
+      <h2 className="text-2xl font-bold text-slate-800">Profile Settings</h2>
 
       {/* NAME */}
 
       <div>
-        <label className="block mb-2 text-sm">Full Name</label>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Full Name
+        </label>
 
         <input
           name="name"
           defaultValue={admin.name || ""}
-          className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
+          className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
         />
       </div>
 
       {/* EMAIL */}
 
       <div>
-        <label className="block mb-2 text-sm">Email</label>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Email
+        </label>
 
         <input
           type="email"
           name="email"
           defaultValue={admin.email}
-          className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
+          className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
         />
       </div>
 
       {/* BUTTON */}
 
-      <button className="bg-blue-600 hover:bg-blue-700 h-12 px-6 rounded-lg">
+      <button className="h-12 rounded-xl bg-amber-500 px-6 font-semibold text-white transition hover:bg-amber-600">
         Save Changes
       </button>
     </form>

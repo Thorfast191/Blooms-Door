@@ -4,59 +4,67 @@ export default function ShippingForm() {
   return (
     <form
       action={createShippingMethod}
-      className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4"
+      className="rounded-2xl border border-slate-300 bg-white p-6 shadow-md space-y-4"
     >
-      <h2 className="text-2xl font-bold">Create Shipping Method</h2>
+      <h2 className="text-2xl font-bold text-slate-800">
+        Create Shipping Method
+      </h2>
 
       {/* NAME */}
 
       <div>
-        <label className="block mb-2 text-sm">Name</label>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Name
+        </label>
 
         <input
           name="name"
           required
           placeholder="Inside Dhaka"
-          className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
+          className="h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
         />
       </div>
 
       {/* PRICE */}
 
       <div>
-        <label className="block mb-2 text-sm">Shipping Cost</label>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Shipping Cost
+        </label>
 
         <input
           type="number"
           name="price"
           required
           placeholder="70"
-          className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
+          className="h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
         />
       </div>
 
       {/* DAYS */}
 
       <div>
-        <label className="block mb-2 text-sm">Estimated Delivery</label>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Estimated Delivery
+        </label>
 
         <input
           name="estimatedDays"
           placeholder="1-2 Days"
-          className="w-full h-12 px-4 rounded-lg bg-slate-950 border border-slate-800"
+          className="h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-slate-800 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
         />
       </div>
 
       {/* PICKUP */}
 
-      <label className="flex items-center gap-2">
+      <label className="flex items-center gap-2 text-slate-700">
         <input type="checkbox" name="isPickup" />
         Store Pickup
       </label>
 
       {/* BUTTON */}
 
-      <button className="bg-blue-600 hover:bg-blue-700 h-12 px-6 rounded-lg">
+      <button className="h-12 rounded-lg bg-amber-500 px-6 font-semibold text-white transition hover:bg-amber-600">
         Create Shipping Method
       </button>
     </form>

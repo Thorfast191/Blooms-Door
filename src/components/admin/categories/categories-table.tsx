@@ -13,10 +13,10 @@ interface Props {
 
 export default function CategoriesTable({ categories }: Props) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+    <div className="overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm">
       <table className="w-full">
-        <thead className="bg-slate-950">
-          <tr className="text-left">
+        <thead className="bg-slate-100">
+          <tr className="text-left text-slate-700">
             <th className="p-4">Category</th>
             <th className="p-4 text-center">Products</th>
             <th className="p-4 text-center">Actions</th>
@@ -25,10 +25,17 @@ export default function CategoriesTable({ categories }: Props) {
 
         <tbody>
           {categories.map((category) => (
-            <tr key={category.id} className="border-t border-slate-800">
-              <td className="p-4 font-semibold">{category.name}</td>
+            <tr
+              key={category.id}
+              className="border-t border-slate-200 hover:bg-slate-50 transition"
+            >
+              <td className="p-4 font-semibold text-slate-900">
+                {category.name}
+              </td>
 
-              <td className="p-4 text-center">{category._count.products}</td>
+              <td className="p-4 text-center text-slate-700">
+                {category._count.products}
+              </td>
 
               <td className="p-4 text-center">
                 <form
@@ -40,7 +47,7 @@ export default function CategoriesTable({ categories }: Props) {
                   <button
                     type="submit"
                     title="Delete category"
-                    className="rounded-lg bg-red-500/10 p-2 text-red-400 transition hover:bg-red-500/20"
+                    className="rounded-lg bg-red-100 p-2 text-red-600 transition hover:bg-red-200"
                   >
                     <Trash2 size={18} />
                   </button>

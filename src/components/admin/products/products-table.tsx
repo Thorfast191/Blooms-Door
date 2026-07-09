@@ -1,102 +1,136 @@
 "use client";
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Upload, X } from "lucide-react";
+import { uploadProductImages } from "@/actions/upload.actions";
 
-import { deleteProduct } from "@/actions/product.actions";
+import Image from "next/image";
 
 interface Props {
-  products: any[];
+  onChange: (urls: string[]) => void;
+  defaultImages?: string[];
 }
 
-export default function ProductsTable({ products }: Props) {
-  const router = useRouter();
+export default function ProductImageUpload({
+  onChange,
+  defaultImages = [],
+}: Props) {
+  const [images, setImages] = useState<string[]>(defaultImages);
+  const [uploading, setUploading] = useState(false);
+
+  async function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
+
+    if (!files?.length) return;
+
+    if (images.length + files.length > 5) {
+      alert("Maximum 5 images allowed");
+      return;
+    }
+
+    try {
+      setUploading(true);
+
+      const formData = new FormData();
+
+      Array.from(files).forEach((file) => {
+        formData.append("files", file);
+      });
+
+      const uploadedUrls = await uploadProductImages(formData);
+
+      const nextImages = [...images, ...uploadedUrls];
+
+      setImages(nextImages);
+
+      onChange(nextImages);
+    } catch (error) {
+      console.error(error);
+      alert("Upload failed");
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
+  }
+
+  function removeImage(index: number) {
+    const nextImages = images.filter((_, i) => i !== index);
+
+    setImages(nextImages);
+
+    onChange(nextImages);
+  }
 
   return (
-    <div className="overflow-x-auto rounded-3xl border border-slate-800 bg-slate-900">
-      <table className="w-full">
-        <thead className="border-b border-slate-800 bg-slate-950">
-          <tr>
-            <th className="p-5 text-left">Image</th>
-            <th className="p-5 text-left">Product</th>
-            <th className="p-5 text-left">Category</th>
-            <th className="p-5 text-left">Price</th>
-            <th className="p-5 text-left">Stock</th>
-            <th className="p-5 text-left">Description</th>
-            <th className="p-5 text-left">Actions</th>
-          </tr>
-        </thead>
+    <div className="space-y-5">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-800">Product Images</h3>
 
-        <tbody>
-          {products.map((product: any) => (
-            <tr
-              key={product.id}
-              className="border-b border-slate-800 last:border-0"
+        <p className="text-sm text-slate-500">Upload up to 5 images</p>
+      </div>
+
+      <label className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-amber-500 hover:bg-amber-50">
+        <Upload size={34} className="text-slate-500" />
+
+        <span className="mt-4 text-sm font-medium text-slate-700">
+          {uploading ? "Uploading..." : "Click to upload images"}
+        </span>
+
+        <span className="mt-1 text-xs text-slate-500">
+          JPG, PNG, WEBP (Maximum 5 Images)
+        </span>
+
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          disabled={uploading}
+          className="hidden"
+          onChange={handleUpload}
+        />
+      </label>
+
+      {images.length > 0 && (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+          {images.map((image, index) => (
+            <div
+              key={`${image}-${index}`}
+              className="relative overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm"
             >
-              {/* Image */}
-              <td className="p-5">
-                {product.images?.length ? (
-                  <Image
-                    src={product.images[0].imageUrl}
-                    alt={product.name}
-                    width={64}
-                    height={64}
-                    className="h-16 w-16 rounded-xl object-cover"
-                  />
-                ) : (
-                  <div className="h-16 w-16 rounded-xl bg-slate-800" />
-                )}
-              </td>
+              <Image
+                src={image}
+                alt={`Product ${index + 1}`}
+                width={300}
+                height={300}
+                className="aspect-square w-full object-cover"
+              />
 
-              {/* Product */}
-              <td className="p-5">
-                <h3 className="font-semibold">{product.name}</h3>
-              </td>
-
-              {/* Category */}
-              <td className="p-5">{product.category?.name ?? "-"}</td>
-
-              {/* Price */}
-              <td className="p-5 font-semibold">৳ {product.price}</td>
-
-              {/* Stock */}
-              <td className="p-5">{product.stock}</td>
-
-              {/* Description */}
-              <td className="max-w-sm p-5">
-                <p className="line-clamp-2 text-sm text-slate-400">
-                  {product.description || "-"}
-                </p>
-              </td>
-
-              {/* Actions */}
-              <td className="p-5">
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => router.push(`/admin/products/${product.id}`)}
-                    className="rounded-xl bg-blue-600 px-4 py-2 text-sm hover:bg-blue-700"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={async () => {
-                      if (!confirm("Delete this product?")) return;
-
-                      await deleteProduct(product.id);
-
-                      router.refresh();
-                    }}
-                    className="rounded-xl bg-red-600 px-4 py-2 text-sm hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
+              {index === 0 && (
+                <div className="absolute left-2 top-2 rounded-lg bg-amber-500 px-2 py-1 text-xs font-semibold text-white shadow">
+                  Cover
                 </div>
-              </td>
-            </tr>
+              )}
+
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow transition hover:bg-red-600"
+              >
+                <X size={14} />
+              </button>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
+
+      {images.map((image, index) => (
+        <input
+          key={`${image}-${index}`}
+          type="hidden"
+          name="images"
+          value={image}
+        />
+      ))}
     </div>
   );
 }
