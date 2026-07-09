@@ -17,7 +17,7 @@ export default function ProductGallery({ images = [], name }: Props) {
     <div className="w-full">
       {/* MAIN IMAGE */}
 
-      <div className="overflow-hidden rounded-[32px] border border-slate-800 bg-slate-900">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <Image
           src={selectedImage}
           alt={name}
@@ -31,14 +31,16 @@ export default function ProductGallery({ images = [], name }: Props) {
       {/* THUMBNAILS */}
 
       {gallery.length > 1 && (
-        <div className="mt-4 grid grid-cols-4 gap-3 sm:gap-4">
+        <div className="mt-5 grid grid-cols-4 gap-3">
           {gallery.map((image, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setSelectedImage(image)}
-              className={`overflow-hidden rounded-2xl border transition ${
-                selectedImage === image ? "border-blue-500" : "border-slate-800"
+              className={`overflow-hidden rounded-xl border-2 transition-all duration-200 ${
+                selectedImage === image
+                  ? "border-amber-500 shadow-md"
+                  : "border-slate-200 hover:border-amber-300"
               }`}
             >
               <Image

@@ -11,29 +11,45 @@ export default function SuccessModal({ successOrderId, router }: Props) {
   if (!successOrderId) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-6">
-      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
-        <div className="mb-5 text-7xl">🎉</div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-6">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-2xl">
+        {/* SUCCESS ICON */}
 
-        <h2 className="mb-4 text-4xl font-black">Order Placed Successfully</h2>
+        <div className="mb-6 text-center text-6xl">🎉</div>
 
-        <p className="mb-8 text-slate-400">
-          Thank you for your order. We will contact you shortly to confirm it.
+        {/* TITLE */}
+
+        <h2 className="text-center text-3xl font-bold text-slate-900">
+          Order Placed Successfully
+        </h2>
+
+        <p className="mt-3 text-center text-slate-500">
+          Thank you for shopping with Bloom's Door.
+          <br />
+          We will contact you shortly to confirm your order.
         </p>
 
-        <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-950 p-4">
-          <p className="mb-2 text-xs text-slate-500">ORDER ID</p>
+        {/* ORDER ID */}
 
-          <p className="break-all font-mono text-sm">{successOrderId}</p>
+        <div className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p className="mb-2 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Order ID
+          </p>
+
+          <p className="break-all text-center font-mono text-sm text-slate-900">
+            {successOrderId}
+          </p>
         </div>
 
-        <p className="mb-8 text-sm text-slate-500">
-          Please save your Order ID for future reference.
+        <p className="mt-4 text-center text-sm text-slate-500">
+          Please save this Order ID for future reference.
         </p>
+
+        {/* BUTTON */}
 
         <button
           onClick={() => router.push("/shop")}
-          className="h-12 w-full rounded-xl bg-blue-600 font-semibold transition hover:bg-blue-700"
+          className="mt-8 h-12 w-full rounded-lg bg-amber-500 font-semibold text-white transition hover:bg-amber-600"
         >
           Continue Shopping
         </button>

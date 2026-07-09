@@ -9,114 +9,69 @@ interface Props {
 
 export default function CategoryHero({ onExploreClick }: Props) {
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-slate-950 text-white">
-      {/* BACKGROUND */}
-
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-slate-950" />
-
-        <div className="absolute right-0 top-0 h-[700px] w-[700px] bg-blue-500/10 blur-[220px]" />
-
-        <div className="absolute bottom-0 left-0 h-[700px] w-[700px] bg-indigo-500/10 blur-[220px]" />
-
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
-
-      {/* CONTENT */}
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-32">
-        <div className="grid min-h-[85vh] grid-cols-1 items-center gap-20 lg:grid-cols-2">
+    <section className="bg-slate-50">
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* LEFT */}
 
           <div>
-            <p className="mb-8 text-sm uppercase tracking-[10px] text-blue-400">
-              POSHMAN STYLE
-            </p>
+            <span className="rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-700">
+              Welcome to Bloom's Door
+            </span>
 
-            <h1 className="text-6xl font-black leading-none md:text-7xl lg:text-[7rem]">
-              MODERN
+            <h1 className="mt-6 text-5xl font-bold leading-tight text-slate-900 lg:text-6xl">
+              Beautiful Home
               <br />
-              FASHION
+              Decor For Every
+              <br />
+              Space
             </h1>
 
-            <p className="mt-8 max-w-xl text-lg leading-8 text-slate-400">
-              Premium streetwear, luxury essentials and timeless silhouettes
-              crafted for the next generation.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+              Discover elegant home décor, artificial flowers, decorative
+              pieces, gifts and stylish accessories that bring warmth and beauty
+              to your home.
             </p>
-
-            <div className="mt-8 flex flex-wrap gap-5 text-sm uppercase tracking-wider text-slate-400">
-              <span className="text-blue-400">✦ Luxury</span>
-              <span>✦ Streetwear</span>
-              <span>✦ Premium</span>
-              <span>✦ Trending</span>
-              <span>✦ Most Wanted</span>
-            </div>
 
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 href="/shop"
-                className="flex h-14 items-center justify-center rounded-full bg-white px-8 font-semibold text-black transition-all duration-300 hover:scale-105"
+                className="rounded-lg bg-amber-500 px-8 py-3 font-semibold text-white transition hover:bg-amber-600"
               >
-                Shop Collection
+                Shop Now
               </Link>
 
               <button
                 onClick={onExploreClick}
-                className="flex h-14 items-center justify-center rounded-full border border-white/10 px-8 transition-all duration-300 hover:border-white/30 hover:bg-white/5"
+                className="rounded-lg border border-slate-300 bg-white px-8 py-3 font-semibold text-slate-700 transition hover:border-amber-500 hover:text-amber-600"
               >
-                Explore
+                Browse Categories
               </button>
+            </div>
+
+            {/* FEATURES */}
+
+            <div className="mt-12 flex flex-wrap gap-8 text-sm text-slate-600">
+              <div>✓ Premium Quality</div>
+              <div>✓ Fast Delivery</div>
+              <div>✓ Cash On Delivery</div>
             </div>
           </div>
 
           {/* RIGHT */}
 
-          <div className="relative">
-            <div className="relative overflow-hidden rounded-[40px] border border-white/10">
+          <div>
+            <div className="overflow-hidden rounded-2xl shadow-xl">
               <Image
-                src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=2070&auto=format&fit=crop"
-                alt="Fashion"
-                width={2070}
-                height={3105}
+                src="https://images.unsplash.com/photo-1517705008128-361805f42e86?q=80&w=1974&auto=format&fit=crop"
+                alt="Home Decor"
+                width={1974}
+                height={1316}
                 priority
-                className="h-[620px] w-full object-cover transition-transform duration-1000 hover:scale-105"
+                className="h-[550px] w-full object-cover"
               />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
-
-              <div className="absolute bottom-6 left-6 right-6 rounded-3xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl">
-                <p className="text-xs uppercase tracking-[5px] text-blue-400">
-                  Featured Collection
-                </p>
-
-                <h3 className="mt-3 text-2xl font-black">Luxury Streetwear</h3>
-
-                <p className="mt-2 text-sm text-slate-400">
-                  Premium oversized silhouettes and timeless essentials.
-                </p>
-              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* FOOTER STRIP */}
-
-      <div className="pointer-events-none absolute bottom-0 left-0 w-full border-t border-white/10 bg-black/20 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-10 px-6 py-5 text-xs uppercase tracking-[4px] text-slate-500">
-          <span>Premium Fashion</span>
-          <span>Streetwear</span>
-          <span>Luxury Essentials</span>
-          <span>Trending Now</span>
-          <span>Most Wanted</span>
-          <span>Poshman Style</span>
         </div>
       </div>
     </section>

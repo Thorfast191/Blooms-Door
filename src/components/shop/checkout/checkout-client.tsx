@@ -132,7 +132,7 @@ export default function CheckoutClient({ shippingMethods }: Props) {
 
   if (!mounted) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+      <div className="flex min-h-screen items-center justify-center bg-white text-gray-700">
         Loading checkout...
       </div>
     );
@@ -144,30 +144,42 @@ export default function CheckoutClient({ shippingMethods }: Props) {
 
   return (
     <>
-      <div className="min-h-screen bg-slate-950 px-6 pb-20 pt-32 text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1fr_420px]">
-          <CheckoutForm
-            fullName={fullName}
-            setFullName={setFullName}
-            phone={phone}
-            setPhone={setPhone}
-            address={address}
-            setAddress={setAddress}
-            paymentMethod={paymentMethod}
-            setPaymentMethod={setPaymentMethod}
-            selectedShippingId={selectedShippingId}
-            setSelectedShippingId={setSelectedShippingId}
-            shippingMethods={shippingMethods}
-          />
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          {/* PAGE HEADER */}
 
-          <CheckoutSummary
-            items={items}
-            subtotal={subtotal}
-            shippingCost={shippingCost}
-            grandTotal={grandTotal}
-            loading={loading}
-            handleCheckout={handleCheckout}
-          />
+          <div className="mb-10">
+            <h1 className="text-4xl font-bold text-gray-900">Checkout</h1>
+
+            <p className="mt-2 text-gray-500">Complete your order securely</p>
+          </div>
+
+          {/* CONTENT */}
+
+          <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
+            <CheckoutForm
+              fullName={fullName}
+              setFullName={setFullName}
+              phone={phone}
+              setPhone={setPhone}
+              address={address}
+              setAddress={setAddress}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
+              selectedShippingId={selectedShippingId}
+              setSelectedShippingId={setSelectedShippingId}
+              shippingMethods={shippingMethods}
+            />
+
+            <CheckoutSummary
+              items={items}
+              subtotal={subtotal}
+              shippingCost={shippingCost}
+              grandTotal={grandTotal}
+              loading={loading}
+              handleCheckout={handleCheckout}
+            />
+          </div>
         </div>
       </div>
 

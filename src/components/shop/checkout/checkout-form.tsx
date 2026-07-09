@@ -47,14 +47,26 @@ export default function CheckoutForm({
   isPickup,
 }: Props) {
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-      <h1 className="mb-10 text-4xl font-black">Checkout</h1>
+    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+      {/* HEADER */}
+
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-slate-900">
+          Customer Information
+        </h2>
+
+        <p className="mt-2 text-slate-500">
+          Please fill in your delivery details.
+        </p>
+      </div>
 
       <div className="space-y-6">
         {/* NAME */}
 
         <div>
-          <label className="mb-3 block text-sm text-slate-400">Full Name</label>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Full Name
+          </label>
 
           <input
             type="text"
@@ -63,14 +75,14 @@ export default function CheckoutForm({
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="John Doe"
-            className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5 focus:border-blue-500 focus:outline-none"
+            className="h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
           />
         </div>
 
         {/* PHONE */}
 
         <div>
-          <label className="mb-3 block text-sm text-slate-400">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Phone Number
           </label>
 
@@ -81,7 +93,7 @@ export default function CheckoutForm({
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="01XXXXXXXXX"
-            className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5 focus:border-blue-500 focus:outline-none"
+            className="h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
           />
         </div>
 
@@ -97,7 +109,7 @@ export default function CheckoutForm({
 
         {!isPickup && (
           <div>
-            <label className="mb-3 block text-sm text-slate-400">
+            <label className="mb-2 block text-sm font-medium text-slate-700">
               Shipping Address
             </label>
 
@@ -106,9 +118,9 @@ export default function CheckoutForm({
               autoComplete="street-address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="House, Road, Area"
+              placeholder="House, Road, Area, District"
               rows={5}
-              className="w-full rounded-2xl border border-slate-800 bg-slate-950 p-5 focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 bg-white p-4 text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none"
             />
           </div>
         )}

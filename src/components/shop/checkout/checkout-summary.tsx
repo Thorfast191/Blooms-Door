@@ -20,8 +20,16 @@ export default function CheckoutSummary({
   handleCheckout,
 }: Props) {
   return (
-    <div className="sticky top-28 h-fit rounded-3xl border border-slate-800 bg-slate-900 p-8">
-      <h2 className="mb-8 text-3xl font-black">Order Summary</h2>
+    <div className="sticky top-28 h-fit rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+      {/* HEADER */}
+
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-slate-900">Order Summary</h2>
+
+        <p className="mt-2 text-sm text-slate-500">
+          Please review your order before placing it.
+        </p>
+      </div>
 
       {/* ITEMS */}
 
@@ -29,20 +37,29 @@ export default function CheckoutSummary({
 
       {/* TOTALS */}
 
-      <div className="mt-8 space-y-4 border-t border-slate-800 pt-8">
+      <div className="mt-8 space-y-4 border-t border-slate-200 pt-8">
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Subtotal</span>
-          <span>৳ {subtotal}</span>
+          <span className="text-slate-500">Subtotal</span>
+
+          <span className="font-medium text-slate-900">
+            ৳ {subtotal.toFixed(2)}
+          </span>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Shipping</span>
-          <span>৳ {shippingCost}</span>
+          <span className="text-slate-500">Shipping</span>
+
+          <span className="font-medium text-slate-900">
+            ৳ {shippingCost.toFixed(2)}
+          </span>
         </div>
 
-        <div className="flex items-center justify-between border-t border-slate-800 pt-5 text-2xl font-black">
-          <span>Total</span>
-          <span>৳ {grandTotal}</span>
+        <div className="flex items-center justify-between border-t border-slate-200 pt-5">
+          <span className="text-xl font-bold text-slate-900">Total</span>
+
+          <span className="text-2xl font-bold text-amber-600">
+            ৳ {grandTotal.toFixed(2)}
+          </span>
         </div>
       </div>
 
@@ -51,7 +68,7 @@ export default function CheckoutSummary({
       <button
         disabled={loading}
         onClick={handleCheckout}
-        className="mt-8 h-14 w-full rounded-2xl bg-green-600 font-bold transition hover:bg-green-700 disabled:bg-slate-700"
+        className="mt-8 h-14 w-full rounded-lg bg-amber-500 font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-slate-300"
       >
         {loading ? "Processing..." : "Place Order"}
       </button>

@@ -24,28 +24,27 @@ export default function AllCategoriesDrawer({
     <>
       {/* BACKDROP */}
 
-      <div
-        className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 z-[90] bg-black/40" onClick={onClose} />
 
       {/* DRAWER */}
 
-      <div className="fixed right-0 top-0 z-[100] h-screen w-full max-w-xl overflow-y-auto border-l border-slate-800 bg-slate-950">
+      <div className="fixed right-0 top-0 z-[100] h-screen w-full max-w-md overflow-y-auto bg-white shadow-2xl">
         {/* HEADER */}
 
-        <div className="sticky top-0 flex items-center justify-between border-b border-slate-800 bg-slate-950/95 px-8 py-6 backdrop-blur">
+        <div className="sticky top-0 flex items-center justify-between border-b border-slate-200 bg-white px-8 py-6">
           <div>
-            <p className="text-xs uppercase tracking-[6px] text-blue-400">
+            <p className="text-xs font-semibold uppercase tracking-[4px] text-amber-600">
               Browse
             </p>
 
-            <h2 className="mt-2 text-3xl font-black">Categories</h2>
+            <h2 className="mt-2 text-3xl font-bold text-slate-900">
+              Categories
+            </h2>
           </div>
 
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 transition hover:border-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition hover:bg-slate-100"
           >
             ✕
           </button>
@@ -62,11 +61,13 @@ export default function AllCategoriesDrawer({
                 key={category.id}
                 href={`/shop/category/${category.id}`}
                 onClick={onClose}
-                className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900 p-5 transition hover:border-blue-500 hover:bg-slate-800"
+                className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-5 py-4 transition hover:border-amber-500 hover:bg-amber-50"
               >
-                <span className="text-lg font-semibold">{category.name}</span>
+                <span className="font-semibold text-slate-800">
+                  {category.name}
+                </span>
 
-                <span>→</span>
+                <span className="text-amber-600">→</span>
               </Link>
             ))
           )}

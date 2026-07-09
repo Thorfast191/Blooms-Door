@@ -19,14 +19,18 @@ export default function ShippingSelector({
 }: Props) {
   return (
     <div>
-      <label className="mb-3 block text-sm text-slate-400">
+      {/* LABEL */}
+
+      <label className="mb-2 block text-sm font-medium text-slate-700">
         Shipping Method
       </label>
+
+      {/* SELECT */}
 
       <select
         value={selectedShippingId}
         onChange={(e) => setSelectedShippingId(e.target.value)}
-        className="h-14 w-full rounded-2xl border border-slate-800 bg-slate-950 px-5"
+        className="h-12 w-full rounded-lg border border-slate-300 bg-white px-4 text-slate-900 transition focus:border-amber-500 focus:outline-none"
       >
         {shippingMethods.map((method) => (
           <option key={method.id} value={method.id}>

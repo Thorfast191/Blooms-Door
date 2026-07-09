@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Trash2, Plus, Minus } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react";
 
 import { useCartStore } from "@/store/cart-store";
 
@@ -14,135 +14,192 @@ export default function CartPage() {
   const totalPrice = useCartStore((state) => state.totalPrice);
 
   return (
-    <div className="min-h-screen bg-slate-950 px-6 py-10 text-white">
-      <div className="mx-auto mb-10 max-w-6xl">
-        <h1 className="text-4xl font-bold">Shopping Cart</h1>
+    <main className="min-h-screen bg-slate-50">
+      {/* ========================================= */}
+      {/* PAGE HEADER */}
+      {/* ========================================= */}
 
-        <p className="mt-2 text-slate-400">Review your items before checkout</p>
-      </div>
-
-      {items.length === 0 && (
-        <div className="mx-auto max-w-6xl rounded-3xl border border-slate-800 bg-slate-900 p-10 text-center">
-          <h2 className="mb-4 text-2xl font-bold">Your cart is empty</h2>
-
-          <p className="mb-6 text-slate-400">
-            Add products to continue shopping
+      <section className="mx-auto max-w-7xl px-6 pb-10 pt-28">
+        <div className="mb-12">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-amber-600">
+            Bloom's Door
           </p>
 
-          <Link
-            href="/shop"
-            className="inline-flex h-12 items-center justify-center rounded-xl bg-blue-600 px-6 hover:bg-blue-700"
-          >
-            Continue Shopping
-          </Link>
+          <h1 className="text-5xl font-black tracking-tight text-slate-900">
+            Shopping Cart
+          </h1>
+
+          <p className="mt-4 text-lg text-slate-600">
+            Review your selected items before checkout.
+          </p>
         </div>
-      )}
 
-      {items.length > 0 && (
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1fr_360px]">
-          <div className="space-y-6">
-            {items.map((item) => (
-              <div
-                key={item.productId}
-                className="flex gap-6 rounded-3xl border border-slate-800 bg-slate-900 p-6"
-              >
-                {item.imageUrl ? (
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.name}
-                    width={128}
-                    height={128}
-                    className="h-32 w-32 rounded-2xl border border-slate-800 object-cover"
-                  />
-                ) : (
-                  <div className="flex h-32 w-32 items-center justify-center rounded-2xl border border-slate-800 bg-slate-950">
-                    <span className="text-3xl">🛍️</span>
-                  </div>
-                )}
+        {/* ========================================= */}
+        {/* EMPTY CART */}
+        {/* ========================================= */}
 
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold">{item.name}</h2>
+        {items.length === 0 && (
+          <div className="rounded-3xl border border-slate-200 bg-white p-16 text-center shadow-sm">
+            <ShoppingBag size={64} className="mx-auto mb-6 text-amber-500" />
 
-                  <div className="mt-4">
-                    <p className="text-lg font-bold">
-                      ৳ {item.price.toFixed(2)}
-                    </p>
+            <h2 className="text-3xl font-bold text-slate-900">
+              Your cart is empty
+            </h2>
 
-                    <p className="text-sm text-slate-400">
-                      Stock: {item.stock}
-                    </p>
-
-                    <p className="mt-2 text-sm text-slate-400">
-                      Subtotal: ৳ {(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 flex items-center gap-3">
-                    <button
-                      onClick={() => decreaseQuantity(item.productId)}
-                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700"
-                    >
-                      <Minus size={16} />
-                    </button>
-
-                    <span className="w-8 text-center text-lg font-semibold">
-                      {item.quantity}
-                    </span>
-
-                    <button
-                      onClick={() => increaseQuantity(item.productId)}
-                      disabled={item.quantity >= item.stock}
-                      className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-500"
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => removeItem(item.productId)}
-                  className="self-start text-red-400 hover:text-red-300"
-                >
-                  <Trash2 size={20} />
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="sticky top-10 h-fit rounded-3xl border border-slate-800 bg-slate-900 p-6">
-            <h2 className="mb-6 text-2xl font-bold">Order Summary</h2>
-
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-slate-400">Subtotal</span>
-
-                <span>৳ {totalPrice().toFixed(2)}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span className="text-slate-400">Shipping</span>
-
-                <span className="text-sm text-slate-500">
-                  Calculated at checkout
-                </span>
-              </div>
-
-              <div className="flex justify-between border-t border-slate-800 pt-4 text-xl font-bold">
-                <span>Estimated Total</span>
-
-                <span>৳ {totalPrice().toFixed(2)}</span>
-              </div>
-            </div>
+            <p className="mt-4 text-slate-500">
+              Looks like you haven't added anything yet.
+            </p>
 
             <Link
-              href="/checkout"
-              className="mt-8 flex h-12 w-full items-center justify-center rounded-xl bg-blue-600 hover:bg-blue-700"
+              href="/shop"
+              className="mt-8 inline-flex h-12 items-center justify-center rounded-lg bg-amber-500 px-8 font-semibold text-white transition hover:bg-amber-600"
             >
-              Proceed to Checkout
+              Continue Shopping
             </Link>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {/* ========================================= */}
+        {/* CART */}
+        {/* ========================================= */}
+
+        {items.length > 0 && (
+          <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
+            {/* ========================================= */}
+            {/* ITEMS */}
+            {/* ========================================= */}
+
+            <div className="space-y-6">
+              {items.map((item) => (
+                <div
+                  key={item.productId}
+                  className="flex gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                >
+                  {/* IMAGE */}
+
+                  {item.imageUrl ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      width={140}
+                      height={140}
+                      className="h-32 w-32 rounded-xl object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-32 w-32 items-center justify-center rounded-xl bg-slate-100">
+                      <ShoppingBag size={40} className="text-slate-400" />
+                    </div>
+                  )}
+
+                  {/* DETAILS */}
+
+                  <div className="flex flex-1 flex-col justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900">
+                        {item.name}
+                      </h2>
+
+                      <p className="mt-3 text-2xl font-bold text-slate-900">
+                        ৳ {item.price.toFixed(2)}
+                      </p>
+
+                      <p className="mt-2 text-sm text-slate-500">
+                        Stock Available : {item.stock}
+                      </p>
+
+                      <p className="mt-2 text-sm text-slate-500">
+                        Item Total : ৳ {(item.price * item.quantity).toFixed(2)}
+                      </p>
+                    </div>
+
+                    {/* QUANTITY */}
+
+                    <div className="mt-6 flex items-center gap-4">
+                      <div className="flex overflow-hidden rounded-lg border border-slate-300">
+                        <button
+                          onClick={() => decreaseQuantity(item.productId)}
+                          className="flex h-10 w-10 items-center justify-center bg-white transition hover:bg-slate-100"
+                        >
+                          <Minus size={16} />
+                        </button>
+
+                        <div className="flex h-10 w-12 items-center justify-center border-x border-slate-300 font-semibold text-slate-900">
+                          {item.quantity}
+                        </div>
+
+                        <button
+                          onClick={() => increaseQuantity(item.productId)}
+                          disabled={item.quantity >= item.stock}
+                          className="flex h-10 w-10 items-center justify-center bg-white transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* REMOVE */}
+
+                  <button
+                    onClick={() => removeItem(item.productId)}
+                    className="self-start rounded-lg p-2 text-red-500 transition hover:bg-red-50"
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* ========================================= */}
+            {/* SUMMARY */}
+            {/* ========================================= */}
+
+            <div className="sticky top-28 h-fit rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+              <h2 className="text-2xl font-bold text-slate-900">
+                Order Summary
+              </h2>
+
+              <div className="mt-8 space-y-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Subtotal</span>
+
+                  <span className="font-semibold text-slate-900">
+                    ৳ {totalPrice().toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Shipping</span>
+
+                  <span className="text-slate-500">Calculated at checkout</span>
+                </div>
+
+                <div className="border-t border-slate-200 pt-5">
+                  <div className="flex justify-between text-xl font-bold text-slate-900">
+                    <span>Total</span>
+
+                    <span>৳ {totalPrice().toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href="/checkout"
+                className="mt-8 flex h-12 w-full items-center justify-center rounded-lg bg-amber-500 font-semibold text-white transition hover:bg-amber-600"
+              >
+                Proceed to Checkout
+              </Link>
+
+              <Link
+                href="/shop"
+                className="mt-4 flex h-12 w-full items-center justify-center rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 transition hover:bg-slate-100"
+              >
+                Continue Shopping
+              </Link>
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
   );
 }
