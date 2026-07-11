@@ -1,28 +1,24 @@
 export default function ShippingPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-white pt-32 pb-20">
-      <div className="max-w-4xl mx-auto px-6">
-        <p className="uppercase tracking-[6px] text-blue-400 text-sm mb-4">
+    <div className="min-h-screen bg-slate-50 pt-32 pb-20 text-slate-900">
+      <div className="mx-auto max-w-4xl px-6">
+        <p className="mb-4 text-sm uppercase tracking-[6px] text-amber-600">
           Delivery
         </p>
 
-        <h1 className="text-5xl font-black mb-8">
-          Shipping Information
-        </h1>
+        <h1 className="mb-8 text-5xl font-black">Shipping Information</h1>
 
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8 space-y-6 text-slate-300 leading-8">
+        <div className="space-y-6 rounded-3xl border border-slate-200 bg-white p-8 leading-8 text-slate-600 shadow-sm">
           <div>
-            <h2 className="text-xl font-bold text-white mb-2">
+            <h2 className="mb-2 text-xl font-bold text-slate-900">
               Processing Time
             </h2>
 
-            <p>
-              Orders are typically processed within 1 business day.
-            </p>
+            <p>Orders are typically processed within 1 business day.</p>
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-white mb-2">
+            <h2 className="mb-2 text-xl font-bold text-slate-900">
               Delivery Time
             </h2>
 
@@ -33,7 +29,7 @@ export default function ShippingPage() {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-white mb-2">
+            <h2 className="mb-2 text-xl font-bold text-slate-900">
               Shipping Charges
             </h2>
 

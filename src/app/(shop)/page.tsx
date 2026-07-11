@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
 import CategoriesShowcase from "@/components/shop/home/categories-showcase";
-// import FeaturedCollection from "@/components/shop/home/featured-collection";
+import FeaturedCollection from "@/components/shop/home/featured-collection";
 // import NewArrivalsSection from "@/components/shop/home/new-arrivals-section";
 // import BestSellersSection from "@/components/shop/home/best-sellers-section";
 // import TrendingSection from "@/components/shop/home/trending-section";
@@ -68,14 +68,13 @@ export default async function HomePage() {
   // OTHER DATA
   // ==========================
 
-  const [categories] = await Promise.all([
+  const [categories, featuredProducts] = await Promise.all([
     prisma.category.findMany({
       orderBy: {
         name: "asc",
       },
     }),
 
-    /*
     prisma.product.findMany({
       take: 4,
 
@@ -93,7 +92,7 @@ export default async function HomePage() {
         createdAt: "desc",
       },
     }),
-
+    /*
     prisma.product.findMany({
       take: 8,
 
@@ -141,11 +140,9 @@ export default async function HomePage() {
       {categories.length > 0 && <CategoriesShowcase categories={categories} />}
 
       {/* FEATURED COLLECTION */}
-      {/*
       {featuredProducts.length > 0 && (
         <FeaturedCollection products={featuredProducts} />
       )}
-      */}
 
       {/* NEW ARRIVALS */}
       {/*
