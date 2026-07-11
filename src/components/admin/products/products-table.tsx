@@ -1,136 +1,141 @@
 "use client";
 
-import { useState } from "react";
-import { Upload, X } from "lucide-react";
-import { uploadProductImages } from "@/actions/upload.actions";
-
 import Image from "next/image";
+import Link from "next/link";
+import { Trash2, Pencil } from "lucide-react";
+
+import { deleteProduct } from "@/actions/product.actions";
 
 interface Props {
-  onChange: (urls: string[]) => void;
-  defaultImages?: string[];
+  products: any[];
 }
 
-export default function ProductImageUpload({
-  onChange,
-  defaultImages = [],
-}: Props) {
-  const [images, setImages] = useState<string[]>(defaultImages);
-  const [uploading, setUploading] = useState(false);
+export default function ProductsTable({ products }: Props) {
+  async function handleDelete(id: string) {
+    const confirmed = confirm("Are you sure you want to delete this product?");
 
-  async function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
-
-    if (!files?.length) return;
-
-    if (images.length + files.length > 5) {
-      alert("Maximum 5 images allowed");
-      return;
-    }
+    if (!confirmed) return;
 
     try {
-      setUploading(true);
-
-      const formData = new FormData();
-
-      Array.from(files).forEach((file) => {
-        formData.append("files", file);
-      });
-
-      const uploadedUrls = await uploadProductImages(formData);
-
-      const nextImages = [...images, ...uploadedUrls];
-
-      setImages(nextImages);
-
-      onChange(nextImages);
-    } catch (error) {
-      console.error(error);
-      alert("Upload failed");
-    } finally {
-      setUploading(false);
-      event.target.value = "";
+      await deleteProduct(id);
+    } catch (error: any) {
+      alert(error.message || "Failed to delete product.");
     }
   }
 
-  function removeImage(index: number) {
-    const nextImages = images.filter((_, i) => i !== index);
+  if (products.length === 0) {
+    return (
+      <div className="rounded-3xl border border-slate-300 bg-white p-12 text-center shadow-sm">
+        <h2 className="text-2xl font-bold text-slate-800">No products found</h2>
 
-    setImages(nextImages);
-
-    onChange(nextImages);
+        <p className="mt-3 text-slate-500">Create your first product above.</p>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h3 className="text-lg font-semibold text-slate-800">Product Images</h3>
+    <div className="overflow-hidden rounded-3xl border border-slate-300 bg-white shadow-md">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[900px]">
+          <thead className="bg-slate-100">
+            <tr className="text-left text-sm font-semibold uppercase tracking-wide text-slate-600">
+              <th className="px-6 py-4">Image</th>
+              <th className="px-6 py-4">Product</th>
+              <th className="px-6 py-4">Category</th>
+              <th className="px-6 py-4">Price</th>
+              <th className="px-6 py-4">Stock</th>
+              <th className="px-6 py-4 text-right">Actions</th>
+            </tr>
+          </thead>
 
-        <p className="text-sm text-slate-500">Upload up to 5 images</p>
-      </div>
-
-      <label className="flex h-44 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-amber-500 hover:bg-amber-50">
-        <Upload size={34} className="text-slate-500" />
-
-        <span className="mt-4 text-sm font-medium text-slate-700">
-          {uploading ? "Uploading..." : "Click to upload images"}
-        </span>
-
-        <span className="mt-1 text-xs text-slate-500">
-          JPG, PNG, WEBP (Maximum 5 Images)
-        </span>
-
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          disabled={uploading}
-          className="hidden"
-          onChange={handleUpload}
-        />
-      </label>
-
-      {images.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
-          {images.map((image, index) => (
-            <div
-              key={`${image}-${index}`}
-              className="relative overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm"
-            >
-              <Image
-                src={image}
-                alt={`Product ${index + 1}`}
-                width={300}
-                height={300}
-                className="aspect-square w-full object-cover"
-              />
-
-              {index === 0 && (
-                <div className="absolute left-2 top-2 rounded-lg bg-amber-500 px-2 py-1 text-xs font-semibold text-white shadow">
-                  Cover
-                </div>
-              )}
-
-              <button
-                type="button"
-                onClick={() => removeImage(index)}
-                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow transition hover:bg-red-600"
+          <tbody>
+            {products.map((product) => (
+              <tr
+                key={product.id}
+                className="border-t border-slate-200 transition hover:bg-slate-50"
               >
-                <X size={14} />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                {/* IMAGE */}
 
-      {images.map((image, index) => (
-        <input
-          key={`${image}-${index}`}
-          type="hidden"
-          name="images"
-          value={image}
-        />
-      ))}
+                <td className="px-6 py-5">
+                  {product.images.length > 0 ? (
+                    <Image
+                      src={product.images[0].imageUrl}
+                      alt={product.name}
+                      width={70}
+                      height={70}
+                      className="h-16 w-16 rounded-xl border border-slate-200 object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-xs text-slate-500">
+                      No Image
+                    </div>
+                  )}
+                </td>
+
+                {/* NAME */}
+
+                <td className="px-6 py-5">
+                  <h3 className="font-semibold text-slate-800">
+                    {product.name}
+                  </h3>
+
+                  <p className="mt-1 line-clamp-2 text-sm text-slate-500">
+                    {product.description || "No description"}
+                  </p>
+                </td>
+
+                {/* CATEGORY */}
+
+                <td className="px-6 py-5">
+                  <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-700">
+                    {product.category?.name ?? "Uncategorized"}
+                  </span>
+                </td>
+
+                {/* PRICE */}
+
+                <td className="px-6 py-5 font-semibold text-slate-800">
+                  ৳ {Number(product.price).toFixed(2)}
+                </td>
+
+                {/* STOCK */}
+
+                <td className="px-6 py-5">
+                  <span
+                    className={`rounded-full px-3 py-1 text-sm font-semibold ${
+                      product.stock > 0
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {product.stock}
+                  </span>
+                </td>
+
+                {/* ACTIONS */}
+
+                <td className="px-6 py-5">
+                  <div className="flex justify-end gap-3">
+                    <Link
+                      href={`/admin/products/${product.id}`}
+                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 text-slate-700 transition hover:border-amber-500 hover:bg-amber-50"
+                    >
+                      <Pencil size={18} />
+                    </Link>
+
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-red-300 text-red-600 transition hover:bg-red-50"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
